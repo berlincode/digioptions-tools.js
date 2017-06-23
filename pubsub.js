@@ -27,6 +27,10 @@
   function PubSub(protocol, xmpp_server){
     'use strict';
 
+    if (typeof window.WebSocket !== 'function')
+      // downgrade to BOSH
+      protocol = protocol.replace('wss', 'https').replace('ws', 'http');
+
     if ((protocol === 'ws') || (protocol === 'wss'))
       this.service = protocol + '://' + xmpp_server + ':5280/websocket';
     else /* http/https */

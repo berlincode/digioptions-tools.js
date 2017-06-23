@@ -23,8 +23,8 @@
       etherscanAddressUrl: 'https://etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://etherscan.io/address/%s',
       contractContractsAddr: [],
-      xmppProtocol: 'ws',
-      xmppHost: 'xmpp_mainnet.digioptions.com',
+      xmppProtocol: 'wss',
+      xmppHost: 'mainnet.xmpp.digioptions.com',
       xmppPath: '/v1/mainnet/%s',
       provider: 'https://mainnet.infura.io', // see https://infura.io/docs/#endpoints
       chainId: 0 // TODO
@@ -37,8 +37,8 @@
       etherscanAddressUrl: 'https://ropsten.etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://ropsten.etherscan.io/address/%s',
       contractContractsAddr: [],
-      xmppProtocol: 'ws',
-      xmppHost: 'xmpp_ropsten.digioptions.com',
+      xmppProtocol: 'wss',
+      xmppHost: 'ropsten.xmpp.digioptions.com',
       xmppPath: '/v1/ropsten/%s',
       provider: 'https://ropsten.infura.io',
       chainId: 0 // TODO
@@ -51,8 +51,8 @@
       etherscanAddressUrl: 'https://kovan.etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://kovan.etherscan.io/address/%s',
       contractContractsAddr: [],
-      xmppProtocol: 'ws',
-      xmppHost: 'xmpp_kovan.digioptions.com',
+      xmppProtocol: 'wss',
+      xmppHost: 'kovan.xmpp.digioptions.com',
       xmppPath: '/v1/kovan/%s',
       provider: 'https://kovan.infura.io',
       chainId: 0 // TODO
@@ -65,8 +65,8 @@
       etherscanAddressUrl: 'https://rinkeby.etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://rinkeby.etherscan.io/address/%s',
       contractContractsAddr: [],
-      xmppProtocol: 'ws',
-      xmppHost: 'xmpp_rinkeby.digioptions.com',
+      xmppProtocol: 'wss',
+      xmppHost: 'rinkeby.xmpp.digioptions.com',
       xmppPath: '/v1/rinkeby/%s',
       provider: 'https://rinkeby.infura.io',
       chainId: 0 // TODO
