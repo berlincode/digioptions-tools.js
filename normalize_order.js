@@ -21,7 +21,6 @@
       "addr": "0x0000000000000000000000000000000000000000",
       "blockExpires": 1234567,
       "contractAddr": "0x0000000000000000000000000000000000000000",
-      "hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
       "optionID": 0,
       "orderID": 4321098765,
       "price": 0,
@@ -38,10 +37,10 @@
       key = list[idx];
       if ((typeof(order[key]) != 'string') || (order[key].length != 42) || (! order[key].startsWith('0x')))
         return null;
-      
+
       order[key] = order[key].toLowerCase();
     }
-    list = ['hash', 'r', 's'];
+    list = ['r', 's'];
     for (idx=0 ; idx < list.length ; ++idx){
       key = list[idx];
       if ((typeof(order[key]) != 'string') || (order[key].length != 66) || (! order[key].startsWith('0x')))
@@ -55,7 +54,7 @@
       if (typeof(order[key]) != 'number')
         return null;
     }
-    if (Object.keys(order).length != 11)
+    if (Object.keys(order).length != 10)
       return null;
 
     // now return a unique key
@@ -63,7 +62,6 @@
       order.addr,
       order.blockExpires,
       order.contractAddr,
-      order.hash,
       order.optionID,
       order.orderID,
       order.price,
@@ -73,6 +71,6 @@
       order.v
     ]);
   }
-      
+
   return {'normalize_order': normalize_order};
 });
