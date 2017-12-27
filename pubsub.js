@@ -38,7 +38,7 @@
 
     this.jid = 'anon@' + xmpp_server;
     this.password = 'password';
-    this.pubsub_node = '/v1/ropsten/0x0000000000000000000000000000000000000000';
+    this.pubsub_node = '/v1/ropsten/0x0000000000000000000000000000000000000002/0x0000000000000000000000000000000000000000000000000000000000000000';
 
     this.connection = null;
     this.connection_ok = false;
@@ -49,6 +49,7 @@
     //this.show_log = true;
 
     this.reconnectInterval = 3000;
+    this.reconnectTimer = null;
   }
 
   // log to console if available
@@ -175,8 +176,24 @@
     } else if (status == Strophe.Status.DISCONNECTED) {
       this.feedback_intern('Disconnected', '#aa0000', this.connection_ok);
 
+      if (this.connection){
+        // try to close the connection (if it is not closed properly)
+        var connection = this.connection;
+        this.connection = undefined;
+        try {
+          // Switch to using synchronous requests since this is typically called onUnload.
+          //this.connection.options.sync = true;
+          //this.connection.flush();
+          connection.disconnect();
+        } catch(err){};
+        this.connection = undefined;
+      }
+
       // always trigger reconnect
-      setTimeout(
+      if (this.reconnectTimer)
+        clearTimeout(this.reconnectTimer);
+
+      this.reconnectTimer = setTimeout(
         function(){return this.connect();}.bind(this),
         this.reconnectInterval
       );
@@ -201,7 +218,9 @@
       Strophe.log = function (level, msg) {this.log('Strophe.log: ' + msg);}.bind(this);
     }
 
+
     this.connection = new Strophe.Connection(this.service);
+    //console.log(this.connection);
 
     if (this.debug){
       this.connection.rawInput = function(data){if (window.console) console.log('RX: ' + data);};

@@ -20,7 +20,8 @@
   {
       "addr": "0x0000000000000000000000000000000000000000",
       "blockExpires": 1234567,
-      "contractAddr": "0x0000000000000000000000000000000000000000",
+      "marketFactHash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+      "marketsAddr": "0x0000000000000000000000000000000000000000",
       "optionID": 0,
       "orderID": 4321098765,
       "price": 0,
@@ -32,7 +33,7 @@
   */
     var idx, key, list;
     //console.log("normalize", order);
-    list = ['addr', 'contractAddr'];
+    list = ['addr', 'marketsAddr'];
     for (idx=0 ; idx < list.length ; ++idx){
       key = list[idx];
       if ((typeof(order[key]) != 'string') || (order[key].length != 42) || (! order[key].startsWith('0x')))
@@ -40,7 +41,7 @@
 
       order[key] = order[key].toLowerCase();
     }
-    list = ['r', 's'];
+    list = ['r', 's', 'marketFactHash'];
     for (idx=0 ; idx < list.length ; ++idx){
       key = list[idx];
       if ((typeof(order[key]) != 'string') || (order[key].length != 66) || (! order[key].startsWith('0x')))
@@ -54,14 +55,15 @@
       if (typeof(order[key]) != 'number')
         return null;
     }
-    if (Object.keys(order).length != 10)
+    if (Object.keys(order).length != 11)
       return null;
 
     // now return a unique key
     return JSON.stringify([
       order.addr,
       order.blockExpires,
-      order.contractAddr,
+      order.marketsAddr,
+      order.marketFactHash,
       order.optionID,
       order.orderID,
       order.price,
