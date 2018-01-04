@@ -2,19 +2,19 @@
 (function (global, factory) {
   if ( typeof define == 'function' && define.amd ) {
     // AMD
-    define( function () { return factory().normalize_order; } );
+    define( function () { return factory(); } );
 
   } else if ( typeof module != 'undefined' && module.exports ) {
     // Node and other environments that support module.exports
-    module.exports = factory().normalize_order;
+    module.exports = factory();
 
   } else {
     // Browser
-    global.normalize_order = factory().normalize_order;
+    global.normalize_order = factory();
   }
 })(this, function(){
 
-  function normalize_order(order){
+  function orderNormalize(order){
   /*
   order data example:
   {
@@ -31,7 +31,7 @@
       "v": 27
   }
   */
-    var idx, key, list;
+    var idx, key, list, normalized_order = {};
     //console.log("normalize", order);
     list = ['addr', 'marketsAddr'];
     for (idx=0 ; idx < list.length ; ++idx){
@@ -39,7 +39,7 @@
       if ((typeof(order[key]) != 'string') || (order[key].length != 42) || (! order[key].startsWith('0x')))
         return null;
 
-      order[key] = order[key].toLowerCase();
+      normalized_order[key] = order[key].toLowerCase();
     }
     list = ['r', 's', 'marketFactHash'];
     for (idx=0 ; idx < list.length ; ++idx){
@@ -47,17 +47,21 @@
       if ((typeof(order[key]) != 'string') || (order[key].length != 66) || (! order[key].startsWith('0x')))
         return null;
 
-      order[key] = order[key].toLowerCase();
+      normalized_order[key] = order[key].toLowerCase();
     }
     list = ['blockExpires', 'optionID', 'orderID', 'price', 'size', 'v'];
     for (idx=0 ; idx < list.length ; ++idx){
       key = list[idx];
       if (typeof(order[key]) != 'number')
         return null;
-    }
-    if (Object.keys(order).length != 11)
-      return null;
 
+      normalized_order[key] = order[key];
+    }
+
+    return normalized_order;
+  }
+  
+  function orderUniqueKey(order){
     // now return a unique key
     return JSON.stringify([
       order.addr,
@@ -74,5 +78,8 @@
     ]);
   }
 
-  return {'normalize_order': normalize_order};
+  return {
+    'orderNormalize': orderNormalize,
+    'orderUniqueKey': orderUniqueKey
+  };
 });

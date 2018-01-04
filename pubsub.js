@@ -42,6 +42,7 @@
 
     this.connection = null;
     this.connection_ok = false;
+    this.auto_reconnect = false;
 
     this.debug = false;
     //this.debug = true;
@@ -176,27 +177,19 @@
     } else if (status == Strophe.Status.DISCONNECTED) {
       this.feedback_intern('Disconnected', '#aa0000', this.connection_ok);
 
-      if (this.connection){
-        // try to close the connection (if it is not closed properly)
-        var connection = this.connection;
-        this.connection = undefined;
-        try {
-          // Switch to using synchronous requests since this is typically called onUnload.
-          //this.connection.options.sync = true;
-          //this.connection.flush();
-          connection.disconnect();
-        } catch(err){};
-        this.connection = undefined;
-      }
+      // ensure connection is closed
+      this.disconnect_intern();
 
       // always trigger reconnect
       if (this.reconnectTimer)
         clearTimeout(this.reconnectTimer);
 
-      this.reconnectTimer = setTimeout(
-        function(){return this.connect();}.bind(this),
-        this.reconnectInterval
-      );
+      if (this.auto_reconnect){
+        this.reconnectTimer = setTimeout(
+          function(){return this.connect();}.bind(this),
+          this.reconnectInterval
+        );
+      }
 
     } else if (status == Strophe.Status.CONNECTED) {
       this.feedback_intern('Connecting... (2 of 2)', '#009900', this.connection_ok);
@@ -218,7 +211,6 @@
       Strophe.log = function (level, msg) {this.log('Strophe.log: ' + msg);}.bind(this);
     }
 
-
     this.connection = new Strophe.Connection(this.service);
     //console.log(this.connection);
 
@@ -227,11 +219,31 @@
       this.connection.rawOutput = function(data){if (window.console) console.log('Tx: ' + data);};
     }
 
+    this.auto_reconnect = true;
     this.connection.connect(
       this.jid,
       this.password,
       function(status){this.on_connect(status);}.bind(this)
     );
+  };
+
+  PubSub.prototype.disconnect_intern = function()
+  {
+    var connection = this.connection;
+    this.connection = undefined;
+    try {
+      // Switch to using synchronous requests since this is typically called onUnload.
+      //this.connection.options.sync = true;
+      //this.connection.flush();
+      connection.disconnect();
+    } catch(err){};
+    this.connection = undefined;
+  };
+
+  PubSub.prototype.disconnect = function()
+  {
+    this.auto_reconnect = false;
+    this.disconnect_intern();
   };
 
   return {'PubSub': PubSub};

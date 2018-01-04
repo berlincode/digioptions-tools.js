@@ -7,63 +7,122 @@
   <script type="text/javascript" src="node_modules/strophe.js/strophe.js"></script> 
   <script type="text/javascript" src="./strophe.pubsub.js"></script> 
   <script type="text/javascript" src="./pubsub.js"></script>
+  <script type="text/javascript" src="./data_networks.js"></script>
+  <script type="text/javascript" src="./data_networks_utils.js"></script>
+  <script type="text/javascript" src="./normalize_order.js"></script>
   <link rel="stylesheet" href="css/styles.css" />
 </head> 
 <body> 
 <div>
-  <div id="connection_status">Connecting...</div>
-  <p id="message"></p>
-  <div id="content">
-    <div>
-      <h1>XMPP PubSub Demo Publisher + Client</h1>
-      <p>Fill in the box below, and a message will be sent to all the clients connected.</p>
+  <h1>DigiOptions orderbook publisher + client (XMPP PubSub)</h1>
+  <div class="block">
+    <div class="grey">
+        <div>Connection status: <span id="connection_status">Disconnected</span></div>
+        <div class="small">xmpp host/port: <span id="info_host"></span></div>
+        <div class="small">pubsub path: <span id="info_path"></span></div>
+    </div>
+  </div>
+  <div class="block">
+    <form class="grey">
+        network: 
+        <select id="network">
+            <!-- values set from jquery below --> 
+        </select>
+        <br/>
+        marketsAddr:
+        <input type="text" name="marketsAddr" id="marketsAddr" value="0x000000000000000000000000000000000000000" />
+        <br/>
+        marketFactHash:
+        <input type="text" name="marketFactHash" id="marketFactHash" value="0x0000000000000000000000000000000000000000000000000000000000000000" />
+        <br/>
+        <button id="connect" type="submit">Connect</button>
+        <button id="disconnect" type="submit" style="display:none;">Disconnect</button>
+    </form>
+  </div>
+  <div class="block">
+    <div class="grey">
       <form>
         <fieldset>
           <ol>
             <li>
-              <label for="message0">Enter a message to send:</label>
-              <textarea id="message0" name="message0" rows="5" autofocus>{
+              <label for="message0">Enter order to send:</label>
+              <textarea id="message0" name="message0" rows="13" autofocus>{
   "addr": "0x0000000000000000000000000000000000000000",
   "blockExpires": 1234567,
-  "contractAddr": "000000000000000000000000000000000000000000",
-  "optionID" :0,
-  "orderID" :4321098765,
+  "marketsAddr": "0x0000000000000000000000000000000000000000",
+  "marketFactHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "optionID": 0,
+  "orderID": 4321098765,
   "price" :0,
   "r": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "s": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "size": 1000000000000000000,
   "v": 27
-}
-    </textarea>
+}</textarea>
             </li>
+<!--
             <li>
-              <label for="message1">Enter a message to send:</label>
-              <textarea id="message1" name="message1" rows="5">{
-"addr": "0x0000000000000000000000000000000000000000",
-"blockExpires": 1234567,
-"contractAddr": "000000000000000000000000000000000000000000",
-"optionID" :0,
-"orderID" :4321098765,
-"price" :0,
-"r": "0x0000000000000000000000000000000000000000000000000000000000000000",
-"s": "0x0000000000000000000000000000000000000000000000000000000000000000",
-"size": 1000000000000000000,
-"v": 27
-}
-    </textarea>
+              <label for="message1">Enter order to send:</label>
+              <textarea id="message1" name="message1" rows="13">{
+  "addr": "0x0000000000000000000000000000000000000000",
+  "blockExpires": 1234567,
+  "marketsAddr": "0x0000000000000000000000000000000000000000",
+  "marketFactHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "optionID": 0,
+  "orderID": 4321098765,
+  "price" :0,
+  "r": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "s": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "size": 1000000000000000000,
+  "v": 27
+}</textarea>
             </li>
+-->
           </ol>
-        </fieldset>
-        <fieldset>
-          <button id="publish" type="submit" style="display:none;">Publish the message</button>
-          <span id="progress"></span>
+          <button id="publish" type="submit" style="display:none;">Publish order</button>
         </fieldset>
       </form>
+    </div>
+  </div>
+  <div class="block">
+    <div class="grey">
+        <button id="clear">clear received orders</button>
+        Order received from orderbook (including own published orders):
+        <p id="message"></p>
     </div>
   </div>
 </div>
 <script type="text/javascript">
 //<![CDATA[
+
+    // parse browser's query string append parameters
+    var args = {};
+    var query = window.location.search.replace(/^\?/i, '');
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      args[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+    }
+
+    // set servers/networks from data_networks
+    var newOption;
+    $.each( data_networks, function( key ) {
+        newOption = new Option(key, key, false, false);
+        $('#network').append(newOption).trigger('change');
+    });
+
+    for (var key in args) {
+        // check if the property/key is defined in the object itself, not in parent
+        if (args.hasOwnProperty(key)) {           
+            var value = args[key];
+            if (key === 'network')
+                $('#network').val(value);
+            else if (key === 'marketsAddr')
+                $('#marketsAddr').val(value);
+            else if (key === 'marketFactHash')
+                $('#marketFactHash').val(value);
+        }
+    }
 
     var pubsub = new PubSub("wss", 'ropsten.xmpp.digioptions.com');
 
@@ -73,10 +132,16 @@
         event.preventDefault();
         var data_array = [];
         try {
-            data_array.push(JSON.parse($('#message0').val()));
+            order = JSON.parse($('#message0').val());
+            order = normalize_order.orderNormalize(order);
+            if (order)
+                data_array.push(order);
         } catch (e) {}
         try {
-            data_array.push(JSON.parse($('#message1').val()));
+            order = JSON.parse($('#message1').val());
+            order = normalize_order.orderNormalize(order);
+            if (order)
+                data_array.push(order);
         } catch (e) {}
         if (data_array.length > 0)
             pubsub.publish(data_array);
@@ -85,7 +150,7 @@
     pubsub.on_data = function(data){
         var i;
         for (i=0 ; i < data.length ; i++){
-            var p = $("<p>").text(JSON.stringify(data[i]));
+            var p = $('<p>').text(JSON.stringify(data[i]));
             $('#message').append(p);
         }
     };
@@ -97,7 +162,46 @@
             $('#publish').fadeOut();
     };
 
-    pubsub.connect();
+
+    $('#connect').click(function(event) {
+        event.preventDefault();
+        $('#connect').hide();
+        $('#disconnect').show();
+
+        $('#message').empty(); // clear
+
+        var network = $('#network').val();
+        var marketsAddr = $('#marketsAddr').val();
+        var marketFactHash = $('#marketFactHash').val();
+        var xmppPath = data_networks_utils.getXmppPath(network, marketsAddr, marketFactHash);
+        var data_network = data_networks[network];
+        $('#info_host').text(
+            data_network.xmppProtocol + "://" +
+            data_network.xmppHost + ":" +
+            data_network.xmppPorts[0]
+        );
+        $('#info_path').text(
+            xmppPath
+        );
+
+        $('#connection_status').html('Connecting...');
+        pubsub.connect();
+    });
+    $('#disconnect').click(function(event) {
+        event.preventDefault();
+        $('#connect').show();
+        $('#disconnect').hide();
+
+        $('#info_host').empty();
+        $('#info_path').empty();
+
+        pubsub.disconnect();
+    });
+
+    $('#clear').click(function(event) {
+        $('#message').empty();
+        event.preventDefault();
+    });
 
 //]]>
 </script>

@@ -14,22 +14,38 @@ h1 {
 body {
   background: #fff;
   color: #111111;
-  font: 120% "Droid Serif", Georgia, "Times New Roman", Times, serif;
+  font: 100% "Droid Serif", Georgia, "Times New Roman", Times, serif;
   padding: 20px;
 }
 
-form {
-  background: #ccc;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  padding: 20px;
-  //width: 500px;
+.small {
+  font-size: 75%;
+}
+
+#marketsAddr {
+  width: 42em;
+}
+
+#marketFactHash {
+  width: 66em;
+}
+
+#clear {
+  float: right;
+}
+
+
+.grey {
+  background: #f0f0f0;
+}
+
+.block {
+  padding-bottom: 12px;
 }
 
 form fieldset {
   border: none;
-  margin-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 form fieldset:last-of-type {
@@ -70,14 +86,12 @@ form input[type=radio] {
   margin-right: 5px;
 }
 
-
 form legend,
 form label {
   font-size: 13px;
   font-weight:bold;
   display:block;
 }
-
 
 form textarea {
   background: #fff;
@@ -89,7 +103,9 @@ form textarea {
   outline: none;
   padding: 10px;
   width: 100%;
-  height: 300px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   font-size:14px;
 }
 
@@ -102,28 +118,16 @@ form button {
   border-radius: 10px;
   color: #ffffff;
   display: block;
-  margin: auto;
+/*  margin: auto;*/
   padding: 7px 25px;
   text-shadow: 0 1px 1px #000000;
   text-transform: uppercase;
   font-size:16px;
   cursor:pointer;
-  float:left;
+/*  float:left;*/
 }
 
 form button:hover {
   background: #333;
   border: none;
 }
-
-form #progress {
-  color:#333;
-  display:block;
-  position:relative;
-  top:4px;
-  left:10px;
-}
-
-.red { color:red; }
-.blue { color:blue; }
-.green { color:green; }

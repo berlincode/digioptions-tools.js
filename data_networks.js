@@ -21,14 +21,14 @@
       digioptionsMarketUrl: '/#/mainnet/{marketsAddr}/{marketFactHash}',
       etherscanApiUrl: 'https://api.etherscan.io/api',
       etherscanAddressUrl: 'https://etherscan.io/address/{contractAddr}',
-      etherscanTxUrl: 'https://etherscan.io/address/%s',
+      etherscanTxUrl: 'https://etherscan.io/address/{tx}',
       marketsAddresses: [],
       xmppProtocol: 'wss',
       xmppHost: 'mainnet.xmpp.digioptions.com',
-      xmppPath: '/v1/mainnet/%s',
+      xmppPath: '/v1/mainnet/{marketsAddr}/{marketFactHash}',
       xmppPorts: [5280],
-      provider: 'https://mainnet.infura.io', // see https://infura.io/docs/#endpoints
-      providerType: 'HttpProvider', // 'HttpProvider' / 'WebsocketProvider'
+      ethProvider: 'https://mainnet.infura.io:443', // see https://infura.io/docs/#endpoints
+      ethProviderType: 'HttpProvider', // 'HttpProvider' / 'WebsocketProvider'
       chainId: 0 // TODO
     },
 
@@ -39,14 +39,14 @@
       digioptionsMarketUrl: '/#/ropsten/{marketsAddr}/{marketFactHash}',
       etherscanApiUrl: 'https://ropsten.etherscan.io/api',
       etherscanAddressUrl: 'https://ropsten.etherscan.io/address/{contractAddr}',
-      etherscanTxUrl: 'https://ropsten.etherscan.io/address/%s',
-      marketsAddresses: ['0x5f79b8585cea4847364c0cd052344eb455e2457b'],
+      etherscanTxUrl: 'https://ropsten.etherscan.io/address/{tx}',
+      marketsAddresses: [],
       xmppProtocol: 'wss',
       xmppHost: 'ropsten.xmpp.digioptions.com',
-      xmppPath: '/v1/ropsten/%s',
+      xmppPath: '/v1/ropsten/{marketsAddr}/{marketFactHash}',
       xmppPorts: [5280],
-      provider: 'https://ropsten.infura.io',
-      providerType: 'HttpProvider',
+      ethProvider: 'https://ropsten.infura.io:443',
+      ethProviderType: 'HttpProvider',
       chainId: 0 // TODO
     },
 
@@ -57,14 +57,14 @@
       digioptionsMarketUrl: '/#/kovan/{marketsAddr}/{marketFactHash}',
       etherscanApiUrl: 'https://kovan.etherscan.io/api',
       etherscanAddressUrl: 'https://kovan.etherscan.io/address/{contractAddr}',
-      etherscanTxUrl: 'https://kovan.etherscan.io/address/%s',
+      etherscanTxUrl: 'https://kovan.etherscan.io/address/{tx}',
       marketsAddresses: [],
       xmppProtocol: 'wss',
       xmppHost: 'kovan.xmpp.digioptions.com',
-      xmppPath: '/v1/kovan/%s',
+      xmppPath: '/v1/kovan/{marketsAddr}/{marketFactHash}',
       xmppPorts: [5280],
-      provider: 'https://kovan.infura.io',
-      providerType: 'HttpProvider',
+      ethProvider: 'https://kovan.infura.io:443',
+      ethProviderType: 'HttpProvider',
       chainId: 0 // TODO
     },
 
@@ -75,14 +75,14 @@
       digioptionsMarketUrl: '/#/rinkeby/{marketsAddr}/{marketFactHash}',
       etherscanApiUrl: 'https://rinkeby.etherscan.io/api',
       etherscanAddressUrl: 'https://rinkeby.etherscan.io/address/{contractAddr}',
-      etherscanTxUrl: 'https://rinkeby.etherscan.io/address/%s',
+      etherscanTxUrl: 'https://rinkeby.etherscan.io/address/{tx}',
       marketsAddresses: [],
       xmppProtocol: 'wss',
       xmppHost: 'rinkeby.xmpp.digioptions.com',
-      xmppPath: '/v1/rinkeby/%s',
+      xmppPath: '/v1/rinkeby/{marketsAddr}/{marketFactHash}',
       xmppPorts: [5280],
-      provider: 'https://rinkeby.infura.io',
-      providerType: 'HttpProvider',
+      ethProvider: 'https://rinkeby.infura.io:443',
+      ethProviderType: 'HttpProvider',
       chainId: 0 // TODO
     }
 
