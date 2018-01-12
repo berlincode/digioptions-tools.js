@@ -74,10 +74,22 @@
       replace('{marketFactHash}', normalizeMarketFactHash(marketFactHash));
   }
 
+  function getProvider(Web3, network){
+    var data_network = data_networks[network];
+    if (data_network.ethProviderType === 'HttpProvider'){
+      return new Web3.providers.HttpProvider(data_network.ethProvider);
+    }
+    else if (data_network.ethProviderType === 'WebsocketProvider'){
+      return new Web3.providers.WebsocketProvider(data_network.ethProvider);
+    }
+    throw 'unknown providerType: ' + data_network.ethProviderType;
+  }
+
   return {
     'getDigioptionsUrlMarket': getDigioptionsUrlMarket,
     'getEtherscanUrlContract': getEtherscanUrlContract,
     'getEtherscanUrlTx': getEtherscanUrlTx,
-    'getXmppPath': getXmppPath
+    'getXmppPath': getXmppPath,
+    'getProvider': getProvider
   };
 });

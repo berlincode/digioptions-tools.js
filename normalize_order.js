@@ -60,7 +60,7 @@
 
     return normalized_order;
   }
-  
+
   function orderUniqueKey(order){
     // now return a unique key
     return JSON.stringify([

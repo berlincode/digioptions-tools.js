@@ -3,7 +3,7 @@
     This program is distributed under the terms of the MIT license.
     Please see the LICENSE file for details.
 
-    Copyright (c) digioptions.com (http://www.digioptions.com) 
+    Copyright (c) digioptions.com (https://www.digioptions.com)
 */
 
 /** File: pubsub.js

@@ -14,11 +14,12 @@
 
   return {
 
-    'mainnet': {
+    /* we use the network names from web3/getNetworkType() as keys */ 
+    'main': {
       description: 'Main network',
       testnet: false,
-      digioptionsContractsUrl: '/#/mainnet/{marketsAddr}',
-      digioptionsMarketUrl: '/#/mainnet/{marketsAddr}/{marketFactHash}',
+      digioptionsContractsUrl: '/#/main/{marketsAddr}',
+      digioptionsMarketUrl: '/#/main/{marketsAddr}/{marketFactHash}',
       etherscanApiUrl: 'https://api.etherscan.io/api',
       etherscanAddressUrl: 'https://etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://etherscan.io/address/{tx}',
