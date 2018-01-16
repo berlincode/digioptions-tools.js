@@ -1,17 +1,24 @@
 // vim: sts=2:ts=2:sw=2
+/*
+    This program is distributed under the terms of the MIT license.
+    Please see the LICENSE file for details.
+
+    Copyright (c) digioptions.com (https://www.digioptions.com)
+*/
+
 (function (global, factory) {
-  if ( typeof define == 'function' && define.amd ) {
+  if ( typeof define === 'function' && define.amd ) {
     // AMD
-    define([
-    ], factory);
     define(
       [
         './data_networks',
       ], function (
-        data_networks) {
+        data_networks
+      ) {
         return factory(
           data_networks
-        ).Market; } );
+        ).Market;
+      });
 
   } else if ( typeof module != 'undefined' && module.exports ) {
     // Node and other environments that support module.exports
@@ -65,13 +72,42 @@
     return data_network.etherscanTxUrl.replace('{tx}', tx);
   }
 
-  function getXmppPath(network, marketsAddr, marketFactHash){
+  function getXmppUrlsWebsocket(network){
     var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.xmppPath) === 'undefined'))
+    if ((typeof(data_network) === 'undefined') || (typeof(data_network.xmppUrlWebsocket) === 'undefined') || (! data_network.xmppPortsWebsocket))
       return null;
-    return data_network.xmppPath.
+    var urls = [];
+    for (var i = 0; i < data_network.xmppPortsWebsocket.length; i++) {
+      urls.push(data_network.xmppUrlWebsocket.replace('{port}', data_network.xmppPortsWebsocket[i]));
+    }
+    return urls;
+  }
+
+  function getXmppUrlsHttpBind(network){
+    var data_network = data_networks[network];
+    if ((typeof(data_network) === 'undefined') || (typeof(data_network.xmppUrlHttpBind) === 'undefined') || (! data_network.xmppPortsHttpBind))
+      return null;
+    var urls = [];
+    for (var i = 0; i < data_network.xmppPortsHttpBind.length; i++) {
+      urls.push(data_network.xmppUrlHttpBind.replace('{port}', data_network.xmppPortsHttpBind[i]));
+    }
+    return urls;
+  }
+
+  function getXmppPubsubNodePath(network, marketsAddr, marketFactHash){
+    var data_network = data_networks[network];
+    //if ((typeof(data_network) === 'undefined') || (typeof(data_network.xmppPubsubNodePath) === 'undefined'))
+    //  return null;
+    return data_network.xmppPubsubNodePath.
       replace('{marketsAddr}', normalizeMarketsAddr(marketsAddr)).
       replace('{marketFactHash}', normalizeMarketFactHash(marketFactHash));
+  }
+
+  function getXmppJidPassword(network){
+    var data_network = data_networks[network];
+    if ((typeof(data_network) === 'undefined') || (typeof(data_network.xmppJidPassword) === 'undefined'))
+      return [null, null];
+    return data_network.xmppJidPassword;
   }
 
   function getProvider(Web3, network){
@@ -86,10 +122,15 @@
   }
 
   return {
+    'normalizeMarketsAddr': normalizeMarketsAddr,
+    'normalizeMarketFactHash': normalizeMarketFactHash,
     'getDigioptionsUrlMarket': getDigioptionsUrlMarket,
     'getEtherscanUrlContract': getEtherscanUrlContract,
     'getEtherscanUrlTx': getEtherscanUrlTx,
-    'getXmppPath': getXmppPath,
+    'getXmppUrlsWebsocket': getXmppUrlsWebsocket,
+    'getXmppUrlsHttpBind': getXmppUrlsHttpBind,
+    'getXmppPubsubNodePath': getXmppPubsubNodePath,
+    'getXmppJidPassword': getXmppJidPassword,
     'getProvider': getProvider
   };
 });

@@ -6,10 +6,9 @@
   <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="node_modules/strophe.js/strophe.js"></script> 
   <script type="text/javascript" src="./strophe.pubsub.js"></script> 
-  <script type="text/javascript" src="./pubsub.js"></script>
   <script type="text/javascript" src="./data_networks.js"></script>
   <script type="text/javascript" src="./data_networks_utils.js"></script>
-  <script type="text/javascript" src="./normalize_order.js"></script>
+  <script type="text/javascript" src="./pubsub.js"></script>
   <link rel="stylesheet" href="css/styles.css" />
 </head> 
 <body> 
@@ -18,7 +17,7 @@
   <div class="block">
     <div class="grey">
         <div>Connection status: <span id="connection_status">Disconnected</span></div>
-        <div class="small">xmpp host/port: <span id="info_host"></span></div>
+        <div class="small">xmpp url: <span id="info_host"></span></div>
         <div class="small">pubsub path: <span id="info_path"></span></div>
     </div>
   </div>
@@ -48,15 +47,15 @@
               <label for="message0">Enter order to send:</label>
               <textarea id="message0" name="message0" rows="13" autofocus>{
   "addr": "0x0000000000000000000000000000000000000000",
-  "blockExpires": 1234567,
   "marketsAddr": "0x0000000000000000000000000000000000000000",
   "marketFactHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "optionID": 0,
-  "orderID": 4321098765,
   "price" :0,
+  "size": 1000000000000000000,
+  "orderID": 4321098765,
+  "blockExpires": 1234567,
   "r": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "s": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "size": 1000000000000000000,
   "v": 27
 }</textarea>
             </li>
@@ -65,15 +64,15 @@
               <label for="message1">Enter order to send:</label>
               <textarea id="message1" name="message1" rows="13">{
   "addr": "0x0000000000000000000000000000000000000000",
-  "blockExpires": 1234567,
   "marketsAddr": "0x0000000000000000000000000000000000000000",
   "marketFactHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "optionID": 0,
-  "orderID": 4321098765,
   "price" :0,
+  "size": 1000000000000000000,
+  "orderID": 4321098765,
+  "blockExpires": 1234567,
   "r": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "s": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "size": 1000000000000000000,
   "v": 27
 }</textarea>
             </li>
@@ -86,9 +85,16 @@
   </div>
   <div class="block">
     <div class="grey">
-        <button id="clear">clear received orders</button>
-        Order received from orderbook (including own published orders):
-        <p id="message"></p>
+        <button class="clear" id="clear_errors">clear errors</button>
+        Errors:
+        <p id="errors"></p>
+    </div>
+  </div>
+  <div class="block">
+    <div class="grey">
+        <button class="clear" id="clear_orders">clear received orders</button>
+        Last 20 order received from orderbook (including own published orders):
+        <p id="orders"></p>
     </div>
   </div>
 </div>
@@ -124,64 +130,85 @@
         }
     }
 
-    var pubsub = new PubSub("wss", 'ropsten.xmpp.digioptions.com');
-
-    pubsub.debug = true;
+    var pubsub;
 
     $('#publish').click(function(event) {
         event.preventDefault();
         var data_array = [];
-        try {
-            order = JSON.parse($('#message0').val());
-            order = normalize_order.orderNormalize(order);
-            if (order)
+        var order;
+        if ($('#message0').length){
+            try {
+                order = JSON.parse($('#message0').val());
                 data_array.push(order);
-        } catch (e) {}
-        try {
-            order = JSON.parse($('#message1').val());
-            order = normalize_order.orderNormalize(order);
-            if (order)
+            } catch (e) {
+                append_error(e);
+            }
+        };
+        if ($('#message1').length){
+            try {
+                order = JSON.parse($('#message1').val());
                 data_array.push(order);
-        } catch (e) {}
+            } catch (e) {
+                append_error(e);
+            }
+        };
         if (data_array.length > 0)
             pubsub.publish(data_array);
+        else
+            append_error("Warning: no order sent");
     });
 
-    pubsub.on_data = function(data){
-        var i;
-        for (i=0 ; i < data.length ; i++){
-            var p = $('<p>').text(JSON.stringify(data[i]));
-            $('#message').append(p);
-        }
-    };
-    pubsub.feedback = function(msg, col, connection_ok){
-        $('#connection_status').html(msg).css('color', col);
-        if (connection_ok)
-            $('#publish').fadeIn();
-        else
-            $('#publish').fadeOut();
+    var pubsub_setup = function(network, marketsAddr, marketFactHash){
+        var pubsub = new PubSub(network, marketsAddr, marketFactHash);
+
+        pubsub.debug = true;
+        pubsub.on_data = function(data){
+            var i;
+            for (i=0 ; i < data.length ; i++){
+                var p = $('<p>').text(JSON.stringify(data[i]));
+                $('#orders').append(p);
+            }
+            while ($('#orders').children().length > 20){
+                $("#orders p:first-child").remove();
+            };
+        };
+        pubsub.feedback = function(msg, col, connection_ok){
+            $('#connection_status').html(msg).css('color', col);
+            if (connection_ok)
+                $('#publish').fadeIn();
+            else
+                $('#publish').fadeOut();
+        };
+        return pubsub;
     };
 
+    var append_error = function(error){
+        var p = $('<p>').text(error);
+        $('#errors').append(p);
+    };
 
     $('#connect').click(function(event) {
         event.preventDefault();
+
+
         $('#connect').hide();
         $('#disconnect').show();
 
-        $('#message').empty(); // clear
+        $('#orders').empty(); // clear
+        $('#errors').empty(); // clear
 
         var network = $('#network').val();
         var marketsAddr = $('#marketsAddr').val();
         var marketFactHash = $('#marketFactHash').val();
-        var xmppPath = data_networks_utils.getXmppPath(network, marketsAddr, marketFactHash);
         var data_network = data_networks[network];
+
+        pubsub = pubsub_setup(network, marketsAddr, marketFactHash);
+
         $('#info_host').text(
-            data_network.xmppProtocol + "://" +
-            data_network.xmppHost + ":" +
-            data_network.xmppPorts[0]
+            data_networks_utils.getXmppUrlsWebsocket(network)[0] // TODO
         );
         $('#info_path').text(
-            xmppPath
+            data_networks_utils.getXmppPubsubNodePath(network, marketsAddr, marketFactHash)
         );
 
         $('#connection_status').html('Connecting...');
@@ -198,9 +225,14 @@
         pubsub.disconnect();
     });
 
-    $('#clear').click(function(event) {
-        $('#message').empty();
+    $('#clear_orders').click(function(event) {
         event.preventDefault();
+        $('#orders').empty();
+    });
+
+    $('#clear_errors').click(function(event) {
+        event.preventDefault();
+        $('#errors').empty();
     });
 
 //]]>

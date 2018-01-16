@@ -19,15 +19,15 @@
   order data example:
   {
       "addr": "0x0000000000000000000000000000000000000000",
-      "blockExpires": 1234567,
-      "marketFactHash": "0x1111111111111111111111111111111111111111111111111111111111111111",
       "marketsAddr": "0x0000000000000000000000000000000000000000",
+      "marketFactHash": "0x1111111111111111111111111111111111111111111111111111111111111111",
       "optionID": 0,
-      "orderID": 4321098765,
       "price": 0,
+      "size": 1000000000000000000,
+      "orderID": 4321098765,
+      "blockExpires": 1234567,
       "r": "0x1111111111111111111111111111111111111111111111111111111111111111",
       "s": "0x2222222222222222222222222222222222222222222222222222222222222222",
-      "size": 1000000000000000000,
       "v": 27
   }
   */
@@ -65,16 +65,13 @@
     // now return a unique key
     return JSON.stringify([
       order.addr,
-      order.blockExpires,
       order.marketsAddr,
       order.marketFactHash,
       order.optionID,
-      order.orderID,
       order.price,
-      order.r,
-      order.s,
+      order.blockExpires,
       order.size,
-      order.v
+      order.orderID
     ]);
   }
 

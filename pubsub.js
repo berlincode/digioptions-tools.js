@@ -12,33 +12,67 @@
 (function (root, factory) {
   if ( typeof define === 'function' && define.amd ) {
     // AMD
-    define(['./strophe.pubsub'], function (Strophe) { return factory(Strophe.Strophe).PubSub; } );
+    define(
+      [
+        './data_networks_utils',
+        './strophe.pubsub'
+      ], function (
+        data_networks_utils,
+        Strophe
+      ) {
+        return factory(
+          data_networks_utils,
+          Strophe.Strophe
+        ).PubSub;
+      });
 
   } else if ( typeof module !== 'undefined' && module.exports ) {
-    // Node and other environments that support module.exports.
-    var Strophe = require('./strophe.pubsub.js');
-    module.exports = factory(Strophe.Strophe).PubSub;
+    // Node and other environments that support module.exports
+    module.exports = factory(
+      require('./data_networks_utils'),
+      require('./strophe.pubsub.js').Strophe
+    ).PubSub;
   } else {
-    // Browser.
-    root.PubSub = factory(window.Strophe).PubSub;
+    // Browser
+    root.PubSub = factory(
+      root.data_networks_utils,
+      root.Strophe
+    ).PubSub;
   }
-})(this, function(Strophe){
+})(this, function(data_networks_utils, Strophe){
 
-  function PubSub(protocol, xmpp_server){
+  function PubSub(network, marketsAddr, marketFactHash){
     'use strict';
 
-    if (typeof window.WebSocket !== 'function')
+    this.services_all = undefined;
+
+    if (typeof window.WebSocket === 'function') {
+      // defaults are websockets
+      this.services_all = data_networks_utils.getXmppUrlsWebsocket(network);
+    }
+
+    if ((typeof(this.services_all) === 'undefined') || (this.services_all.length === 0)) {
       // downgrade to BOSH
-      protocol = protocol.replace('wss', 'https').replace('ws', 'http');
+      this.services_all = data_networks_utils.getXmppUrlsHttpBind(network);
+    }
 
-    if ((protocol === 'ws') || (protocol === 'wss'))
-      this.service = protocol + '://' + xmpp_server + ':5280/websocket';
-    else /* http/https */
-      this.service = protocol + '://' + xmpp_server + ':5280/http-bind';
+    if ((typeof(this.services_all) == undefined) || (this.services_all.length === 0)) {
+      // no connection possible
+      throw 'no valid xmpp service url found';
+    }
+ 
+    // we use the first service found for now ...
+    this.service = this.services_all[0];
 
-    this.jid = 'anon@' + xmpp_server;
-    this.password = 'password';
-    this.pubsub_node = '/v1/ropsten/0x0000000000000000000000000000000000000002/0x0000000000000000000000000000000000000000000000000000000000000000';
+    var jidPassword = data_networks_utils.getXmppJidPassword(network);
+    this.jid = jidPassword[0];
+    this.password = jidPassword[1];
+
+    this.pubsub_node_path = data_networks_utils.getXmppPubsubNodePath(
+      network,
+      data_networks_utils.normalizeMarketsAddr(marketsAddr),
+      data_networks_utils.normalizeMarketFactHash(marketFactHash)
+    );
 
     this.connection = null;
     this.connection_ok = false;
@@ -91,7 +125,7 @@
     entry.appendChild(t);
 
     this.connection.pubsub.publish(
-      this.pubsub_node,
+      this.pubsub_node_path,
       [{data: entry}],
       function(data){return this.on_send(data);}.bind(this)
     );
@@ -148,7 +182,7 @@
 
     // TODO connection_ok should be set AFTER all items are received
     this.connection.pubsub.items(
-      this.pubsub_node,
+      this.pubsub_node_path,
       /* success */
       function(message){return this.on_items_event(message);}.bind(this),
       /* error */
@@ -164,44 +198,51 @@
 
   PubSub.prototype.on_connect = function(status)
   {
-    if (status != Strophe.Status.CONNECTED){
-      this.connection_ok = false;
-    }
+    try {
 
-    if (status == Strophe.Status.CONNECTING) {
-      this.feedback_intern('Connecting... (1 of 2)', '#009900', this.connection_ok);
-    } else if (status == Strophe.Status.CONNFAIL) {
-      this.feedback_intern('Connection failed', '#FF0000', this.connection_ok);
-    } else if (status == Strophe.Status.DISCONNECTING) {
-      this.feedback_intern('Disconnecting...', '#CC6600', this.connection_ok);
-    } else if (status == Strophe.Status.DISCONNECTED) {
-      this.feedback_intern('Disconnected', '#aa0000', this.connection_ok);
+      if (status != Strophe.Status.CONNECTED){
+        this.connection_ok = false;
+      }
 
-      // ensure connection is closed
-      this.disconnect_intern();
+      if (status == Strophe.Status.CONNECTING) {
+        this.feedback_intern('Connecting... (1 of 2)', '#009900', this.connection_ok);
+      } else if (status == Strophe.Status.CONNFAIL) {
+        this.feedback_intern('Connection failed', '#FF0000', this.connection_ok);
+      } else if (status == Strophe.Status.DISCONNECTING) {
+        this.feedback_intern('Disconnecting...', '#CC6600', this.connection_ok);
+      } else if (status == Strophe.Status.DISCONNECTED) {
+        this.feedback_intern('Disconnected', '#aa0000', this.connection_ok);
 
-      // always trigger reconnect
-      if (this.reconnectTimer)
-        clearTimeout(this.reconnectTimer);
+        // ensure connection is closed
+        this.disconnect_intern();
 
-      if (this.auto_reconnect){
-        this.reconnectTimer = setTimeout(
-          function(){return this.connect();}.bind(this),
-          this.reconnectInterval
+        // always trigger reconnect
+        if (this.reconnectTimer)
+          clearTimeout(this.reconnectTimer);
+
+        if (this.auto_reconnect){
+          this.reconnectTimer = setTimeout(
+            function(){return this.connect();}.bind(this),
+            this.reconnectInterval
+          );
+        }
+
+      } else if (status == Strophe.Status.CONNECTED) {
+        this.feedback_intern('Connecting... (2 of 2)', '#009900', this.connection_ok);
+        this.connection.pubsub.subscribe(
+          this.pubsub_node_path,
+          [],
+          function(message){return this.on_subscribe_event(message);}.bind(this),
+          function(sub){this.on_subscribe(sub);}.bind(this),
+          function(sub){this.on_subscribe_error(sub);}.bind(this)
         );
       }
 
-    } else if (status == Strophe.Status.CONNECTED) {
-      this.feedback_intern('Connecting... (2 of 2)', '#009900', this.connection_ok);
-      this.connection.pubsub.subscribe(
-        this.pubsub_node,
-        [],
-        function(message){return this.on_subscribe_event(message);}.bind(this),
-        function(sub){this.on_subscribe(sub);}.bind(this),
-        function(sub){this.on_subscribe_error(sub);}.bind(this)
-      );
+    } catch (e){
+      console.log('ERROR: ' + (e.stack ? e.stack : e));
     }
 
+    // Return true to keep calling the callback.
     return true;
   };
 
@@ -236,7 +277,9 @@
       //this.connection.options.sync = true;
       //this.connection.flush();
       connection.disconnect();
-    } catch(err){};
+    } catch(err){
+      // empty catch
+    }
     this.connection = undefined;
   };
 
