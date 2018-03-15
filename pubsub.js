@@ -51,12 +51,12 @@
       this.services_all = data_networks_utils.getXmppUrlsWebsocket(network);
     }
 
-    if ((typeof(this.services_all) === 'undefined') || (this.services_all.length === 0)) {
+    if ((this.services_all === null) || (typeof(this.services_all) === 'undefined') || (this.services_all.length === 0)) {
       // downgrade to BOSH
       this.services_all = data_networks_utils.getXmppUrlsHttpBind(network);
     }
 
-    if ((typeof(this.services_all) == undefined) || (this.services_all.length === 0)) {
+    if ((this.services_all === null) || (typeof(this.services_all) == undefined) || (this.services_all.length === 0)) {
       // no connection possible
       throw 'no valid xmpp service url found';
     }
