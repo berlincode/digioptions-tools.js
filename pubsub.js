@@ -90,7 +90,7 @@
   // log to console if available
   PubSub.prototype.log = function(msg)
   {
-    if (this.show_log && window.console) { console.log(msg); }
+    if (this.show_log && window.console) { window.console.log(msg); }
   };
 
   // simplify connection status messages
@@ -173,7 +173,7 @@
   {
     // TODO handle
     if (window.console)
-      console.log('on_subscribe_error', sub);
+      window.console.log('on_subscribe_error', sub);
   };
 
   PubSub.prototype.on_subscribe = function(/* sub */)
@@ -187,7 +187,8 @@
       function(message){return this.on_items_event(message);}.bind(this),
       /* error */
       function(sub){
-        console.log('items error', sub); // TODO handle
+        if (window.console)
+          window.console.log('items error', sub); // TODO handle
       }.bind(this)
     );
 
@@ -239,7 +240,8 @@
       }
 
     } catch (e){
-      console.log('ERROR: ' + (e.stack ? e.stack : e));
+      if (window.console)
+        window.console.log('ERROR: ' + (e.stack ? e.stack : e));
     }
 
     // Return true to keep calling the callback.
@@ -256,8 +258,8 @@
     //console.log(this.connection);
 
     if (this.debug){
-      this.connection.rawInput = function(data){if (window.console) console.log('RX: ' + data);};
-      this.connection.rawOutput = function(data){if (window.console) console.log('Tx: ' + data);};
+      this.connection.rawInput = function(data){if (window.console) window.console.log('RX: ' + data);};
+      this.connection.rawOutput = function(data){if (window.console) window.console.log('Tx: ' + data);};
     }
 
     this.auto_reconnect = true;

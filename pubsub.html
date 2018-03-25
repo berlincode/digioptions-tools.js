@@ -123,8 +123,8 @@
             var value = args[key];
             if (key === 'network')
                 $('#network').val(value);
-            else if (key === 'marketsAddr')
-                $('#marketsAddr').val(value);
+            else if (key === 'marketsAddresses')
+                $('#marketsAddr').val(JSON.parse(args.marketsAddresses)[0]);
             else if (key === 'marketFactHash')
                 $('#marketFactHash').val(value);
         }

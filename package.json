@@ -1,6 +1,6 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "trading tools for the ethereum based digital option exchange digioptions.com",
   "homepage": "https://www.digioptions.com",
   "license": "MIT",
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "serve": "http-server . -a 127.0.0.1 -p 8888 -c-1",
-    "eslint": "eslint ./*.js ./test/*.js"
+    "eslint": "eslint ./"
   },
   "files": [
     "css",

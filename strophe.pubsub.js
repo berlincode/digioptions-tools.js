@@ -33,8 +33,7 @@
     } else if ( typeof module != 'undefined' && module.exports ) {
         // Node and other environments that support module.exports.
 
-        /* for strophe.js 1.2.13 and newer */
-        var Strophe = require("strophe.js");
+        var Strophe = require("strophe.js/src/wrapper.js");
         factory(
             Strophe.Strophe,
             Strophe.$build,
@@ -44,17 +43,6 @@
         );
         module.exports = Strophe;
 
-        /* for strophe.js up to 1.2.12
-        require("strophe.js");
-        factory(
-            global.Strophe,
-            global.$build,
-            global.$iq ,
-            global.$msg,
-            global.$pres
-        );
-        module.exports = {Strophe: global.Strophe};
-        */
     } else {
         // Browser globals
         factory(

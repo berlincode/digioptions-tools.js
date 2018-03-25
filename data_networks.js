@@ -32,6 +32,7 @@
       xmppJidPassword: ['anon@mainnet.xmpp.digioptions.com', 'password'],
       ethProvider: 'https://mainnet.infura.io:443', // see https://infura.io/docs/#endpoints
       ethProviderType: 'HttpProvider', // 'HttpProvider' / 'WebsocketProvider'
+      factsignerContract: true,
       chainId: 0 // TODO
     },
 
@@ -52,6 +53,7 @@
       xmppJidPassword: ['anon@ropsten.xmpp.digioptions.com', 'password'],
       ethProvider: 'https://ropsten.infura.io:443',
       ethProviderType: 'HttpProvider',
+      factsignerContract: true,
       chainId: 0 // TODO
     },
 
@@ -72,6 +74,7 @@
       xmppJidPassword: ['anon@kovan.xmpp.digioptions.com', 'password'],
       ethProvider: 'https://kovan.infura.io:443',
       ethProviderType: 'HttpProvider',
+      factsignerContract: true,
       chainId: 0 // TODO
     },
 
@@ -92,6 +95,7 @@
       xmppJidPassword: ['anon@rinkeby.xmpp.digioptions.com', 'password'],
       ethProvider: 'https://rinkeby.infura.io:443',
       ethProviderType: 'HttpProvider',
+      factsignerContract: true,
       chainId: 0 // TODO
     }
 
