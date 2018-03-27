@@ -48,13 +48,37 @@
     return normalizeHexValue(addr, 32);
   }
 
-  function getDigioptionsUrlMarket(network, marketsAddr, marketFactHash){
+  function getDigioptionsUrlNetwork(network, relativeUrl){
+    var data_network = data_networks[network];
+    if ((typeof(data_network) === 'undefined') || (typeof(data_network.digioptionsNetworkUrl) === 'undefined'))
+      return null;
+    var url = data_network.digioptionsNetworkUrl;
+    if (relativeUrl)
+      return url;
+    return data_network.digioptionsBaseUrl + url;
+  }
+
+  function getDigioptionsUrlContract(network, marketsAddr, relativeUrl){
+    var data_network = data_networks[network];
+    if ((typeof(data_network) === 'undefined') || (typeof(data_network.digioptionsContractsUrl) === 'undefined'))
+      return null;
+    var url = data_network.digioptionsContractsUrl.
+      replace('{marketsAddr}', normalizeMarketsAddr(marketsAddr));
+    if (relativeUrl)
+      return url;
+    return data_network.digioptionsBaseUrl + url;
+  }
+
+  function getDigioptionsUrlMarket(network, marketsAddr, marketFactHash, relativeUrl){
     var data_network = data_networks[network];
     if ((typeof(data_network) === 'undefined') || (typeof(data_network.digioptionsMarketUrl) === 'undefined'))
       return null;
-    return data_network.digioptionsMarketUrl.
+    var url = data_network.digioptionsMarketUrl.
       replace('{marketsAddr}', normalizeMarketsAddr(marketsAddr)).
       replace('{marketFactHash}', normalizeMarketFactHash(marketFactHash));
+    if (relativeUrl)
+      return url;
+    return data_network.digioptionsBaseUrl + url;
   }
 
   function getEtherscanUrlContract(network, contractAddr){
@@ -124,6 +148,8 @@
   return {
     'normalizeMarketsAddr': normalizeMarketsAddr,
     'normalizeMarketFactHash': normalizeMarketFactHash,
+    'getDigioptionsUrlNetwork': getDigioptionsUrlNetwork,
+    'getDigioptionsUrlContract': getDigioptionsUrlContract,
     'getDigioptionsUrlMarket': getDigioptionsUrlMarket,
     'getEtherscanUrlContract': getEtherscanUrlContract,
     'getEtherscanUrlTx': getEtherscanUrlTx,

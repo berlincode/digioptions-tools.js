@@ -18,6 +18,9 @@
     'main': {
       description: 'Main network',
       testnet: false,
+      digioptionsBaseUrl: 'https://www.digioptions.com',
+      digioptionsRootUrl: '/#',
+      digioptionsNetworkUrl: '/#/main',
       digioptionsContractsUrl: '/#/main/{marketsAddr}',
       digioptionsMarketUrl: '/#/main/{marketsAddr}/{marketFactHash}',
       etherscanApiUrl: 'https://api.etherscan.io/api',
@@ -39,6 +42,9 @@
     'ropsten': {
       description: 'Test network',
       testnet: true,
+      digioptionsBaseUrl: 'https://www.digioptions.com',
+      digioptionsRootUrl: '/#',
+      digioptionsNetworkUrl: '/#/ropsten',
       digioptionsContractsUrl: '/#/ropsten/{marketsAddr}',
       digioptionsMarketUrl: '/#/ropsten/{marketsAddr}/{marketFactHash}',
       etherscanApiUrl: 'https://ropsten.etherscan.io/api',
@@ -60,6 +66,9 @@
     'kovan': {
       description: 'Proof-of-authority test network',
       testnet: true,
+      digioptionsBaseUrl: 'https://www.digioptions.com',
+      digioptionsRootUrl: '/#',
+      digioptionsNetworkUrl: '/#/kovan',
       digioptionsContractsUrl: '/#/kovan/{marketsAddr}',
       digioptionsMarketUrl: '/#/kovan/{marketsAddr}/{marketFactHash}',
       etherscanApiUrl: 'https://kovan.etherscan.io/api',
@@ -81,6 +90,9 @@
     'rinkeby': {
       description: 'Clique-consensus test network',
       testnet: true,
+      digioptionsBaseUrl: 'https://www.digioptions.com',
+      digioptionsRootUrl: '/#',
+      digioptionsNetworkUrl: '/#/rinkeby',
       digioptionsContractsUrl: '/#/rinkeby/{marketsAddr}',
       digioptionsMarketUrl: '/#/rinkeby/{marketsAddr}/{marketFactHash}',
       etherscanApiUrl: 'https://rinkeby.etherscan.io/api',
