@@ -187,10 +187,7 @@
         $('#errors').append(p);
     };
 
-    $('#connect').click(function(event) {
-        event.preventDefault();
-
-
+    var connect = function(){
         $('#connect').hide();
         $('#disconnect').show();
 
@@ -213,7 +210,13 @@
 
         $('#connection_status').html('Connecting...');
         pubsub.connect();
+    };
+
+    $('#connect').click(function(event) {
+        event.preventDefault();
+        connect();
     });
+
     $('#disconnect').click(function(event) {
         event.preventDefault();
         $('#connect').show();
@@ -234,6 +237,11 @@
         event.preventDefault();
         $('#errors').empty();
     });
+
+    if (('network' in args) && ('marketsAddresses' in args) && ('marketFactHash' in args)){
+        // if all parameters are given we try to connect automatically
+        connect();
+    };
 
 //]]>
 </script>
