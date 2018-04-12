@@ -1,0 +1,11 @@
+{
+  "name": "digioptions-tools.js",
+  "version": "0.7.0",
+  "dependencies": {
+    "strophe.js": {
+      "version": "1.2.14",
+      "from": "git+https://github.com/strophe/strophejs.git#3ae1a43a7afb7e839c6a2272fc24f9dc60441805",
+      "resolved": "git+https://github.com/strophe/strophejs.git#3ae1a43a7afb7e839c6a2272fc24f9dc60441805"
+    }
+  }
+}

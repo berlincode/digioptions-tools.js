@@ -1,0 +1,45 @@
+{
+  "name": "digioptions-tools.js",
+  "version": "0.7.0",
+  "description": "trading tools for the ethereum based digital option exchange digioptions.com",
+  "homepage": "https://www.digioptions.com",
+  "license": "MIT",
+  "main": "index.js",
+  "author": {
+    "name": "Ulf Bartel", 
+    "email": "elastic.code@gmail.com"
+  },
+  "scripts": {
+    "serve": "http-server . -a 127.0.0.1 -p 8888 -c-1",
+    "eslint": "eslint ./"
+  },
+  "files": [
+    "css",
+    "data_config.js",
+    "data_networks.js",
+    "data_networks_utils.js",
+    "index.js",
+    "LICENSE",
+    "normalize_order.js",
+    "pubsub.html",
+    "pubsub.js",
+    "strophe.pubsub.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/berlincode/digioptions-tools.js.git"
+  },
+  "keywords": [
+    "option exchange",
+    "smart contract",
+    "ethereum"
+  ],
+  "dependencies": {
+    "strophe.js": "git+https://github.com/strophe/strophejs.git#3ae1a43a7afb7e839c6a2272fc24f9dc60441805"
+  },
+  "devDependencies": {
+    "http-server": "^0.10.0",
+    "jquery": "^3.2.1",
+    "eslint": "4.18.2"
+  }
+}
