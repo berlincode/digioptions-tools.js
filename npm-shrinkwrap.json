@@ -2,6 +2,12 @@
   "name": "digioptions-tools.js",
   "version": "0.7.0",
   "dependencies": {
+    "jquery": {
+      "version": "3.2.1",
+      "from": "jquery@3.2.1",
+      "resolved": "https://registry.npmjs.org/jquery/-/jquery-3.2.1.tgz",
+      "dev": true
+    },
     "strophe.js": {
       "version": "1.2.14",
       "from": "git+https://github.com/strophe/strophejs.git#3ae1a43a7afb7e839c6a2272fc24f9dc60441805",

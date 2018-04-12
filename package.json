@@ -14,7 +14,7 @@
     "eslint": "eslint ./"
   },
   "files": [
-    "css",
+    "css/styles.css",
     "data_config.js",
     "data_networks.js",
     "data_networks_utils.js",
