@@ -50,7 +50,7 @@
       etherscanApiUrl: 'https://ropsten.etherscan.io/api',
       etherscanAddressUrl: 'https://ropsten.etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://ropsten.etherscan.io/address/{tx}',
-      marketsAddresses: [],
+      marketsAddresses: ['0x7b7942acccba57718efe1a441d5bebb9b62453c7'],
       xmppUrlWebsocket: 'wss://ropsten.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://ropsten.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],

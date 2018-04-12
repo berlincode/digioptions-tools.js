@@ -80,6 +80,10 @@
       return url;
     return data_network.digioptionsBaseUrl + url;
   }
+  
+  function getPubSubXmppUrl(network, marketsAddr, marketFactHash){
+//  "https://berlincode.github.io/digioptions-tools.js/css/styles.css"
+  }
 
   function getEtherscanUrlContract(network, contractAddr){
     var data_network = data_networks[network];
