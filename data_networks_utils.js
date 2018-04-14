@@ -80,6 +80,16 @@
       return url;
     return data_network.digioptionsBaseUrl + url;
   }
+  
+  function getXmppPubsubViewerUrl(network, marketsAddr, marketFactHash){
+    var data_network = data_networks[network];
+    if ((typeof(data_network) === 'undefined') || (typeof(data_network.digioptionsMarketUrl) === 'undefined'))
+      return null;
+    var url = data_network.xmppPubsubViewer.
+      replace('{marketsAddr}', normalizeMarketsAddr(marketsAddr)).
+      replace('{marketFactHash}', normalizeMarketFactHash(marketFactHash));
+    return url;
+  }
 
   function getEtherscanUrlContract(network, contractAddr){
     var data_network = data_networks[network];
@@ -151,6 +161,7 @@
     'getDigioptionsUrlNetwork': getDigioptionsUrlNetwork,
     'getDigioptionsUrlContract': getDigioptionsUrlContract,
     'getDigioptionsUrlMarket': getDigioptionsUrlMarket,
+    'getXmppPubsubViewerUrl': getXmppPubsubViewerUrl,
     'getEtherscanUrlContract': getEtherscanUrlContract,
     'getEtherscanUrlTx': getEtherscanUrlTx,
     'getXmppUrlsWebsocket': getXmppUrlsWebsocket,

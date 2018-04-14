@@ -2,3 +2,4 @@ node_modules
 README.html
 *.custom*
 npm-debug.log
+dist

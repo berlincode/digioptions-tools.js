@@ -7,7 +7,7 @@ Components:
 -----------
 
  * data_networks
- * normalize_order.js 
+ * order_normalize.js 
  * pubsub.js which uses strophe.pubsub.js from https://raw.githubusercontent.com/strophe/strophejs-plugin-pubsub/2434be3506d47a7601b4e376ae3b4b0a45bd64ad/strophe.pubsub.js (added a case for nodejs)
 
 Public repository

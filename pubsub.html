@@ -123,8 +123,8 @@
             var value = args[key];
             if (key === 'network')
                 $('#network').val(value);
-            else if (key === 'marketsAddresses')
-                $('#marketsAddr').val(JSON.parse(args.marketsAddresses)[0]);
+            else if (key === 'marketsAddr')
+                $('#marketsAddr').val(value);
             else if (key === 'marketFactHash')
                 $('#marketFactHash').val(value);
         }
@@ -152,14 +152,17 @@
                 append_error(e);
             }
         };
-        if (data_array.length > 0)
-            pubsub.publish(data_array);
+        if (data_array.length > 0) {
+            var marketsAddr = $('#marketsAddr').val();
+            var marketFactHash = $('#marketFactHash').val();
+            pubsub.publish(data_array, marketsAddr, marketFactHash);
+        }
         else
             append_error("Warning: no order sent");
     });
 
-    var pubsub_setup = function(network, marketsAddr, marketFactHash){
-        var pubsub = new PubSub(network, marketsAddr, marketFactHash);
+    var pubsub_setup = function(network){
+        var pubsub = new PubSub(network);
 
         pubsub.debug = true;
         pubsub.on_data = function(data){
@@ -199,7 +202,7 @@
         var marketFactHash = $('#marketFactHash').val();
         var data_network = data_networks[network];
 
-        pubsub = pubsub_setup(network, marketsAddr, marketFactHash);
+        pubsub = pubsub_setup(network);
 
         $('#info_host').text(
             data_networks_utils.getXmppUrlsWebsocket(network)[0] // TODO
@@ -238,7 +241,7 @@
         $('#errors').empty();
     });
 
-    if (('network' in args) && ('marketsAddresses' in args) && ('marketFactHash' in args)){
+    if (('network' in args) && ('marketsAddr' in args) && ('marketFactHash' in args)){
         // if all parameters are given we try to connect automatically
         connect();
     };

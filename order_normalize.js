@@ -10,7 +10,7 @@
 
   } else {
     // Browser
-    global.normalize_order = factory();
+    global.order_normalize = factory();
   }
 })(this, function(){
 
@@ -61,22 +61,5 @@
     return normalized_order;
   }
 
-  function orderUniqueKey(order){
-    // now return a unique key
-    return JSON.stringify([
-      order.addr,
-      order.marketsAddr,
-      order.marketFactHash,
-      order.optionID,
-      order.price,
-      order.blockExpires,
-      order.size,
-      order.orderID
-    ]);
-  }
-
-  return {
-    'orderNormalize': orderNormalize,
-    'orderUniqueKey': orderUniqueKey
-  };
+  return orderNormalize;
 });

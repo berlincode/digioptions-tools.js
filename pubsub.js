@@ -41,7 +41,7 @@
   }
 })(this, function(data_networks_utils, Strophe){
 
-  function PubSub(network, marketsAddr, marketFactHash){
+  function PubSub(network){
     'use strict';
 
     this.services_all = undefined;
@@ -68,11 +68,8 @@
     this.jid = jidPassword[0];
     this.password = jidPassword[1];
 
-    this.pubsub_node_path = data_networks_utils.getXmppPubsubNodePath(
-      network,
-      data_networks_utils.normalizeMarketsAddr(marketsAddr),
-      data_networks_utils.normalizeMarketFactHash(marketFactHash)
-    );
+    this.network = network;
+    this.nodes_subscribe = [];
 
     this.connection = null;
     this.connection_ok = false;
@@ -116,16 +113,22 @@
   };
 
   // push the data to the clients
-  PubSub.prototype.publish = function(data)
+  PubSub.prototype.publish = function(data, marketsAddr, marketFactHash)
   {
     if (data.message === '') return;
+
+    var pubsub_node_path = data_networks_utils.getXmppPubsubNodePath(
+      this.network,
+      data_networks_utils.normalizeMarketsAddr(marketsAddr),
+      data_networks_utils.normalizeMarketFactHash(marketFactHash)
+    );
 
     var entry = Strophe.xmlElement('entry', []);
     var t = Strophe.xmlTextNode(JSON.stringify(data));
     entry.appendChild(t);
 
     this.connection.pubsub.publish(
-      this.pubsub_node_path,
+      pubsub_node_path,
       [{data: entry}],
       function(data){return this.on_send(data);}.bind(this)
     );
@@ -176,13 +179,11 @@
       window.console.log('on_subscribe_error', sub);
   };
 
-  PubSub.prototype.on_subscribe = function(/* sub */)
+  PubSub.prototype.on_subscribe = function( sub, pubsub_node_path )
   {
-    this.connection_ok = true;
-
-    // TODO connection_ok should be set AFTER all items are received
+    // receive all items
     this.connection.pubsub.items(
-      this.pubsub_node_path,
+      pubsub_node_path,
       /* success */
       function(message){return this.on_items_event(message);}.bind(this),
       /* error */
@@ -192,9 +193,21 @@
       }.bind(this)
     );
 
-    this.feedback_intern('Connected', '#00FF00', this.connection_ok);
-
     return true;
+  };
+
+  PubSub.prototype.connect_intern = function(pubsub_node_path_array){
+    for (var i = 0; i < pubsub_node_path_array.length; i++) {
+      var pubsub_node_path = pubsub_node_path_array[i];
+
+      this.connection.pubsub.subscribe(
+        pubsub_node_path,
+        [],
+        function(message){return this.on_subscribe_event(message);}.bind(this),
+        function(sub){this.on_subscribe(sub, pubsub_node_path);}.bind(this),
+        function(sub){this.on_subscribe_error(sub);}.bind(this)
+      );
+    }
   };
 
   PubSub.prototype.on_connect = function(status)
@@ -229,14 +242,12 @@
         }
 
       } else if (status == Strophe.Status.CONNECTED) {
-        this.feedback_intern('Connecting... (2 of 2)', '#009900', this.connection_ok);
-        this.connection.pubsub.subscribe(
-          this.pubsub_node_path,
-          [],
-          function(message){return this.on_subscribe_event(message);}.bind(this),
-          function(sub){this.on_subscribe(sub);}.bind(this),
-          function(sub){this.on_subscribe_error(sub);}.bind(this)
-        );
+        //this.feedback_intern('Connecting... (2 of 2)', '#009900', this.connection_ok);
+
+        this.connection_ok = true;
+        this.feedback_intern('Connected', '#00FF00', this.connection_ok);
+
+        this.connect_intern(this.nodes_subscribe);
       }
 
     } catch (e){
@@ -268,6 +279,21 @@
       this.password,
       function(status){this.on_connect(status);}.bind(this)
     );
+  };
+
+  PubSub.prototype.subscribe = function(marketsAddr, marketFactHash){
+    var pubsub_node_path = data_networks_utils.getXmppPubsubNodePath(
+      this.network,
+      data_networks_utils.normalizeMarketsAddr(marketsAddr),
+      data_networks_utils.normalizeMarketFactHash(marketFactHash)
+    );
+    // node already subscribed?
+    if (this.nodes_subscribe.indexOf(pubsub_node_path) >= 0)
+      return;
+
+    this.nodes_subscribe.push(pubsub_node_path);
+    if (this.connection_ok === true)
+      this.connect_intern([pubsub_node_path]);
   };
 
   PubSub.prototype.disconnect_intern = function()

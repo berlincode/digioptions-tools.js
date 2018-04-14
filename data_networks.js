@@ -33,6 +33,7 @@
       xmppPortsHttpBind: [5280],
       xmppPubsubNodePath: '/v1/mainnet/{marketsAddr}/{marketFactHash}',
       xmppJidPassword: ['anon@mainnet.xmpp.digioptions.com', 'password'],
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=main&marketsAddr={marketsAddr}&marketFactHash={marketFactHash}',
       ethProvider: 'https://mainnet.infura.io:443', // see https://infura.io/docs/#endpoints
       ethProviderType: 'HttpProvider', // 'HttpProvider' / 'WebsocketProvider'
       factsignerContract: true,
@@ -57,6 +58,7 @@
       xmppPortsHttpBind: [5280],
       xmppPubsubNodePath: '/v1/ropsten/{marketsAddr}/{marketFactHash}',
       xmppJidPassword: ['anon@ropsten.xmpp.digioptions.com', 'password'],
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ropsten&marketsAddr={marketsAddr}&marketFactHash={marketFactHash}',
       ethProvider: 'https://ropsten.infura.io:443',
       ethProviderType: 'HttpProvider',
       factsignerContract: true,
@@ -81,6 +83,7 @@
       xmppPortsHttpBind: [5280],
       xmppPubsubNodePath: '/v1/kovan/{marketsAddr}/{marketFactHash}',
       xmppJidPassword: ['anon@kovan.xmpp.digioptions.com', 'password'],
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=kovan&marketsAddr={marketsAddr}&marketFactHash={marketFactHash}',
       ethProvider: 'https://kovan.infura.io:443',
       ethProviderType: 'HttpProvider',
       factsignerContract: true,
@@ -105,6 +108,7 @@
       xmppPortsHttpBind: [5280],
       xmppPubsubNodePath: '/v1/rinkeby/{marketsAddr}/{marketFactHash}',
       xmppJidPassword: ['anon@rinkeby.xmpp.digioptions.com', 'password'],
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=rinkeby&marketsAddr={marketsAddr}&marketFactHash={marketFactHash}',
       ethProvider: 'https://rinkeby.infura.io:443',
       ethProviderType: 'HttpProvider',
       factsignerContract: true,
