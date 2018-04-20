@@ -203,7 +203,6 @@
       this.connection.pubsub.subscribe(
         pubsub_node_path,
         [],
-        function(message){return this.on_subscribe_event(message);}.bind(this),
         function(sub){this.on_subscribe(sub, pubsub_node_path);}.bind(this),
         function(sub){this.on_subscribe_error(sub);}.bind(this)
       );
@@ -278,6 +277,16 @@
       this.jid,
       this.password,
       function(status){this.on_connect(status);}.bind(this)
+    );
+
+    // add the handler for pubsub messages for ALL nodes
+    this.connection.pubsub._connection.addHandler(
+      function(message){return this.on_subscribe_event(message);}.bind(this),
+      null, // XML NS
+      'message', // Name
+      null, // Type
+      null, // ID
+      null // From
     );
   };
 

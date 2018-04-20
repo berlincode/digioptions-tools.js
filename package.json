@@ -1,6 +1,6 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.8.0",
+  "version": "0.10.0",
   "description": "trading tools for the ethereum based digital option exchange digioptions.com",
   "homepage": "https://www.digioptions.com",
   "license": "MIT",
@@ -24,6 +24,7 @@
     "order_unique_key.js",
     "pubsub.html",
     "pubsub.js",
+    "strophe_polyfills.js",
     "strophe.pubsub.js"
   ],
   "repository": {
@@ -36,7 +37,7 @@
     "ethereum"
   ],
   "dependencies": {
-    "strophe.js": "git+https://github.com/strophe/strophejs.git#3ae1a43a7afb7e839c6a2272fc24f9dc60441805"
+    "strophe.js": "git+https://github.com/strophe/strophejs.git#e81ce285b9be2bacc2bf7c83d1207231427367d9"
   },
   "devDependencies": {
     "http-server": "^0.10.0",

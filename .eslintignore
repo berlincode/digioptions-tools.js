@@ -1,2 +1,3 @@
 /node_modules/
 /strophe.pubsub.js
+strophe_polyfills.js
