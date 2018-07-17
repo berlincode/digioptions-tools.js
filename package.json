@@ -2,11 +2,11 @@
   "name": "digioptions-tools.js",
   "version": "0.10.0",
   "description": "trading tools for the ethereum based digital option exchange digioptions.com",
-  "homepage": "https://www.digioptions.com",
+  "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
   "main": "index.js",
   "author": {
-    "name": "Ulf Bartel", 
+    "name": "Ulf Bartel",
     "email": "elastic.code@gmail.com"
   },
   "scripts": {
@@ -21,7 +21,6 @@
     "index.js",
     "LICENSE",
     "order_normalize.js",
-    "order_unique_key.js",
     "pubsub.html",
     "pubsub.js",
     "strophe_polyfills.js",
@@ -37,7 +36,7 @@
     "ethereum"
   ],
   "dependencies": {
-    "strophe.js": "git+https://github.com/strophe/strophejs.git#e81ce285b9be2bacc2bf7c83d1207231427367d9"
+    "strophe.js": "git+https://github.com/strophe/strophejs.git#c3b7e8619347ef2b800a3f4943fe64fce6540af1"
   },
   "devDependencies": {
     "http-server": "^0.10.0",

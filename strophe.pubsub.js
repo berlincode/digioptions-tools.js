@@ -8,7 +8,7 @@
 
     Changes for digioptions.com by Ulf Bartel:
       * wrapped whole file to support amd, nodejs and direct browser usage
-      * subscribe and unsubscribe are are independen from callback function
+      * subscribe and unsubscribe are independent from callback function
 */
 
 /** File: strophe.pubsub.js

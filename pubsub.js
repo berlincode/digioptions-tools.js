@@ -202,7 +202,7 @@
 
       this.connection.pubsub.subscribe(
         pubsub_node_path,
-        [],
+        undefined, //[],
         function(sub){this.on_subscribe(sub, pubsub_node_path);}.bind(this),
         function(sub){this.on_subscribe_error(sub);}.bind(this)
       );

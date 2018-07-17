@@ -5,7 +5,6 @@
     define([
       './pubsub',
       './order_normalize',
-      './order_unique_key',
       './data_networks',
       './data_networks_utils',
       './data_config'
@@ -15,7 +14,6 @@
     module.exports = factory(
       require('./pubsub'),
       require('./order_normalize'),
-      require('./order_unique_key.js'),
       require('./data_networks'),
       require('./data_networks_utils'),
       require('./data_config')
@@ -25,17 +23,15 @@
     root.digioptionsTools = factory(
       root.PubSub,
       root.order_normalize,
-      root.order_unique_key,
       root.data_networks,
       root.data_networks_utils,
       root.data_config
     );
   }
-}(this, function (PubSub, orderNormalize, orderUniqueKey, data_networks, data_networks_utils, data_config) {
+}(this, function (PubSub, orderNormalize, data_networks, data_networks_utils, data_config) {
   return {
     PubSub: PubSub,
     orderNormalize: orderNormalize,
-    orderUniqueKey: orderUniqueKey,
     data_networks: data_networks,
     data_networks_utils: data_networks_utils,
     data_config: data_config
