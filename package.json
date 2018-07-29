@@ -1,6 +1,6 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.10.0",
+  "version": "0.12.0",
   "description": "trading tools for the ethereum based digital option exchange digioptions.com",
   "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
