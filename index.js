@@ -4,7 +4,7 @@
     // AMD
     define([
       './pubsub',
-      './normalize_order',
+      './order_normalize',
       './data_networks',
       './data_networks_utils',
       './data_config'
@@ -13,7 +13,7 @@
     // CommonJS (node and other environments that support module.exports)
     module.exports = factory(
       require('./pubsub'),
-      require('./normalize_order'),
+      require('./order_normalize'),
       require('./data_networks'),
       require('./data_networks_utils'),
       require('./data_config')
@@ -22,16 +22,16 @@
     // Global (browser)
     root.digioptionsTools = factory(
       root.PubSub,
-      root.normalize_order,
+      root.order_normalize,
       root.data_networks,
       root.data_networks_utils,
       root.data_config
     );
   }
-}(this, function (PubSub, normalize_order, data_networks, data_networks_utils, data_config) {
+}(this, function (PubSub, orderNormalize, data_networks, data_networks_utils, data_config) {
   return {
     PubSub: PubSub,
-    normalize_order: normalize_order,
+    orderNormalize: orderNormalize,
     data_networks: data_networks,
     data_networks_utils: data_networks_utils,
     data_config: data_config

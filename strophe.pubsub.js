@@ -5,6 +5,10 @@
     Copyright 2008, Stanziq  Inc.
 
     Overhauled in October 2009 by Liam Breck [How does this affect copyright?]
+
+    Changes for digioptions.com by Ulf Bartel:
+      * wrapped whole file to support amd, nodejs and direct browser usage
+      * subscribe and unsubscribe are independent from callback function
 */
 
 /** File: strophe.pubsub.js
@@ -33,6 +37,7 @@
     } else if ( typeof module != 'undefined' && module.exports ) {
         // Node and other environments that support module.exports.
 
+        require("./strophe_polyfills.js");
         var Strophe = require("strophe.js/src/wrapper.js");
         factory(
             Strophe.Strophe,
@@ -139,7 +144,7 @@ Extend connection object to have plugin name 'pubsub'.
     _autoService: true,
     service: null,
     jid: null,
-    handler : {},
+    //handler : {},
 
     //The plugin must have the init function.
     init: function(conn) {
@@ -218,30 +223,30 @@ Extend connection object to have plugin name 'pubsub'.
      (String) node - The name of node
      (String) handler - reference to registered strophe handler
      */
-    storeHandler: function(node, handler) {
-        if (!this.handler[node]) {
-            this.handler[node] = [];
-        }
-        this.handler[node].push(handler);
-    },
+    //storeHandler: function(node, handler) {
+    //    if (!this.handler[node]) {
+    //        this.handler[node] = [];
+    //    }
+    //    this.handler[node].push(handler);
+    //},
 
     /***Function
 
      Parameters:
      (String) node - The name of node
      */
-    removeHandler : function (node) {
+    //removeHandler : function (node) {
 
-        var toberemoved = this.handler[node];
-        this.handler[node] = [];
+    //    var toberemoved = this.handler[node];
+    //    this.handler[node] = [];
 
         // remove handler
-        if (toberemoved && toberemoved.length > 0) {
-            for (var i = 0, l = toberemoved.length; i < l; i++) {
-                this._connection.deleteHandler(toberemoved[i]);
-            }
-        }
-    },
+    //    if (toberemoved && toberemoved.length > 0) {
+    //        for (var i = 0, l = toberemoved.length; i < l; i++) {
+    //            this._connection.deleteHandler(toberemoved[i]);
+    //        }
+    //    }
+    //},
 
     /***Function
 
@@ -378,7 +383,7 @@ Extend connection object to have plugin name 'pubsub'.
         Returns:
         Iq id used to send subscription.
     */
-    subscribe: function(node, options, event_cb, success, error, barejid) {
+    subscribe: function(node, options/*, event_cb */, success, error, barejid) {
         var that = this._connection;
         var iqid = that.getUniqueId("subscribenode");
 
@@ -394,8 +399,8 @@ Extend connection object to have plugin name 'pubsub'.
         }
 
         //add the event handler to receive items
-        var hand = that.addHandler(event_cb, null, 'message', null, null, null);
-        this.storeHandler(node, hand);
+        //var hand = that.addHandler(event_cb, null, 'message', null, null, null);
+        //this.storeHandler(node, hand);
         that.sendIQ(iq.tree(), success, error);
         return iqid;
     },
@@ -419,7 +424,7 @@ Extend connection object to have plugin name 'pubsub'.
         if (subid) iq.attrs({subid:subid});
 
         that.sendIQ(iq.tree(), success, error);
-        this.removeHandler(node);
+        //this.removeHandler(node);
         return iqid;
     },
 

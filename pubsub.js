@@ -41,22 +41,23 @@
   }
 })(this, function(data_networks_utils, Strophe){
 
-  function PubSub(network, marketsAddr, marketFactHash){
+  function PubSub(network){
     'use strict';
 
     this.services_all = undefined;
 
-    if (typeof window.WebSocket === 'function') {
+    if (typeof WebSocket === 'function') {
       // defaults are websockets
       this.services_all = data_networks_utils.getXmppUrlsWebsocket(network);
     }
 
-    if ((this.services_all === null) || (typeof(this.services_all) === 'undefined') || (this.services_all.length === 0)) {
-      // downgrade to BOSH
-      this.services_all = data_networks_utils.getXmppUrlsHttpBind(network);
-    }
+    // BOSH does currently not work
+    //if ((this.services_all === null) || (typeof(this.services_all) === 'undefined') || (this.services_all.length === 0)) {
+    //  // downgrade to BOSH
+    //  this.services_all = data_networks_utils.getXmppUrlsHttpBind(network);
+    //}
 
-    if ((this.services_all === null) || (typeof(this.services_all) == undefined) || (this.services_all.length === 0)) {
+    if ((this.services_all === null) || (typeof(this.services_all) == 'undefined') || (this.services_all.length === 0)) {
       // no connection possible
       throw 'no valid xmpp service url found';
     }
@@ -68,11 +69,8 @@
     this.jid = jidPassword[0];
     this.password = jidPassword[1];
 
-    this.pubsub_node_path = data_networks_utils.getXmppPubsubNodePath(
-      network,
-      data_networks_utils.normalizeMarketsAddr(marketsAddr),
-      data_networks_utils.normalizeMarketFactHash(marketFactHash)
-    );
+    this.network = network;
+    this.nodes_subscribe = [];
 
     this.connection = null;
     this.connection_ok = false;
@@ -90,7 +88,7 @@
   // log to console if available
   PubSub.prototype.log = function(msg)
   {
-    if (this.show_log && window.console) { window.console.log(msg); }
+    if (this.show_log) {console.log(msg);}
   };
 
   // simplify connection status messages
@@ -116,19 +114,29 @@
   };
 
   // push the data to the clients
-  PubSub.prototype.publish = function(data)
+  PubSub.prototype.publish = function(data, marketsAddr, marketFactHash)
   {
     if (data.message === '') return;
+
+    var pubsub_node_path = data_networks_utils.getXmppPubsubNodePath(
+      this.network,
+      data_networks_utils.normalizeMarketsAddr(marketsAddr),
+      data_networks_utils.normalizeMarketFactHash(marketFactHash)
+    );
 
     var entry = Strophe.xmlElement('entry', []);
     var t = Strophe.xmlTextNode(JSON.stringify(data));
     entry.appendChild(t);
 
+    if (! this.connection)
+      return false;
+
     this.connection.pubsub.publish(
-      this.pubsub_node_path,
+      pubsub_node_path,
       [{data: entry}],
       function(data){return this.on_send(data);}.bind(this)
     );
+    return true;
   };
 
   PubSub.prototype.on_items_event = function(message)
@@ -176,13 +184,11 @@
       window.console.log('on_subscribe_error', sub);
   };
 
-  PubSub.prototype.on_subscribe = function(/* sub */)
+  PubSub.prototype.on_subscribe = function( sub, pubsub_node_path )
   {
-    this.connection_ok = true;
-
-    // TODO connection_ok should be set AFTER all items are received
+    // receive all items
     this.connection.pubsub.items(
-      this.pubsub_node_path,
+      pubsub_node_path,
       /* success */
       function(message){return this.on_items_event(message);}.bind(this),
       /* error */
@@ -192,9 +198,20 @@
       }.bind(this)
     );
 
-    this.feedback_intern('Connected', '#00FF00', this.connection_ok);
-
     return true;
+  };
+
+  PubSub.prototype.connect_intern = function(pubsub_node_path_array){
+    for (var i = 0; i < pubsub_node_path_array.length; i++) {
+      var pubsub_node_path = pubsub_node_path_array[i];
+
+      this.connection.pubsub.subscribe(
+        pubsub_node_path,
+        undefined, //[],
+        function(sub){this.on_subscribe(sub, pubsub_node_path);}.bind(this),
+        function(sub){this.on_subscribe_error(sub);}.bind(this)
+      );
+    }
   };
 
   PubSub.prototype.on_connect = function(status)
@@ -229,14 +246,12 @@
         }
 
       } else if (status == Strophe.Status.CONNECTED) {
-        this.feedback_intern('Connecting... (2 of 2)', '#009900', this.connection_ok);
-        this.connection.pubsub.subscribe(
-          this.pubsub_node_path,
-          [],
-          function(message){return this.on_subscribe_event(message);}.bind(this),
-          function(sub){this.on_subscribe(sub);}.bind(this),
-          function(sub){this.on_subscribe_error(sub);}.bind(this)
-        );
+        //this.feedback_intern('Connecting... (2 of 2)', '#009900', this.connection_ok);
+
+        this.connection_ok = true;
+        this.feedback_intern('Connected', '#00FF00', this.connection_ok);
+
+        this.connect_intern(this.nodes_subscribe);
       }
 
     } catch (e){
@@ -258,8 +273,8 @@
     //console.log(this.connection);
 
     if (this.debug){
-      this.connection.rawInput = function(data){if (window.console) window.console.log('RX: ' + data);};
-      this.connection.rawOutput = function(data){if (window.console) window.console.log('Tx: ' + data);};
+      this.connection.rawInput = function(data){console.log('RX: ' + data);};
+      this.connection.rawOutput = function(data){console.log('Tx: ' + data);};
     }
 
     this.auto_reconnect = true;
@@ -268,6 +283,31 @@
       this.password,
       function(status){this.on_connect(status);}.bind(this)
     );
+
+    // add the handler for pubsub messages for ALL nodes
+    this.connection.pubsub._connection.addHandler(
+      function(message){return this.on_subscribe_event(message);}.bind(this),
+      null, // XML NS
+      'message', // Name
+      null, // Type
+      null, // ID
+      null // From
+    );
+  };
+
+  PubSub.prototype.subscribe = function(marketsAddr, marketFactHash){
+    var pubsub_node_path = data_networks_utils.getXmppPubsubNodePath(
+      this.network,
+      data_networks_utils.normalizeMarketsAddr(marketsAddr),
+      data_networks_utils.normalizeMarketFactHash(marketFactHash)
+    );
+    // node already subscribed?
+    if (this.nodes_subscribe.indexOf(pubsub_node_path) >= 0)
+      return;
+
+    this.nodes_subscribe.push(pubsub_node_path);
+    if (this.connection_ok === true)
+      this.connect_intern([pubsub_node_path]);
   };
 
   PubSub.prototype.disconnect_intern = function()
