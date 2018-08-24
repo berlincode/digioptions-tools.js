@@ -1,10 +1,10 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "description": "trading tools for the ethereum based digital option exchange digioptions.com",
   "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
-  "main": "index.js",
+  "main": "js/index.js",
   "author": {
     "name": "Ulf Bartel",
     "email": "elastic.code@gmail.com"

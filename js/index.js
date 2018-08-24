@@ -8,7 +8,7 @@
       './data_networks',
       './data_networks_utils',
       './data_config',
-      './js/quote_provider',
+      './quote_provider',
     ], factory);
   } else if (typeof module !== 'undefined' && module.exports) {
     // CommonJS (node and other environments that support module.exports)
@@ -18,7 +18,7 @@
       require('./data_networks'),
       require('./data_networks_utils'),
       require('./data_config'),
-      require('./js/quote_provider.js')
+      require('./quote_provider.js')
     );
   }else {
     // Global (browser)
