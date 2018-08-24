@@ -17,7 +17,7 @@
       ) {
         return factory(
           data_networks
-        ).Market;
+        );
       });
 
   } else if ( typeof module != 'undefined' && module.exports ) {

@@ -46,17 +46,18 @@
 
     this.services_all = undefined;
 
-    if (typeof window.WebSocket === 'function') {
+    if (typeof WebSocket === 'function') {
       // defaults are websockets
       this.services_all = data_networks_utils.getXmppUrlsWebsocket(network);
     }
 
-    if ((this.services_all === null) || (typeof(this.services_all) === 'undefined') || (this.services_all.length === 0)) {
-      // downgrade to BOSH
-      this.services_all = data_networks_utils.getXmppUrlsHttpBind(network);
-    }
+    // BOSH does currently not work
+    //if ((this.services_all === null) || (typeof(this.services_all) === 'undefined') || (this.services_all.length === 0)) {
+    //  // downgrade to BOSH
+    //  this.services_all = data_networks_utils.getXmppUrlsHttpBind(network);
+    //}
 
-    if ((this.services_all === null) || (typeof(this.services_all) == undefined) || (this.services_all.length === 0)) {
+    if ((this.services_all === null) || (typeof(this.services_all) == 'undefined') || (this.services_all.length === 0)) {
       // no connection possible
       throw 'no valid xmpp service url found';
     }
@@ -73,7 +74,7 @@
 
     this.connection = null;
     this.connection_ok = false;
-    this.auto_reconnect = false;
+    this.autoReconnect = false;
 
     this.debug = false;
     //this.debug = true;
@@ -87,7 +88,7 @@
   // log to console if available
   PubSub.prototype.log = function(msg)
   {
-    if (this.show_log && window.console) { window.console.log(msg); }
+    if (this.show_log) {console.log(msg);}
   };
 
   // simplify connection status messages
@@ -127,11 +128,15 @@
     var t = Strophe.xmlTextNode(JSON.stringify(data));
     entry.appendChild(t);
 
+    if (! this.connection)
+      return false;
+
     this.connection.pubsub.publish(
       pubsub_node_path,
       [{data: entry}],
       function(data){return this.on_send(data);}.bind(this)
     );
+    return true;
   };
 
   PubSub.prototype.on_items_event = function(message)
@@ -233,7 +238,7 @@
         if (this.reconnectTimer)
           clearTimeout(this.reconnectTimer);
 
-        if (this.auto_reconnect){
+        if (this.autoReconnect){
           this.reconnectTimer = setTimeout(
             function(){return this.connect();}.bind(this),
             this.reconnectInterval
@@ -268,11 +273,11 @@
     //console.log(this.connection);
 
     if (this.debug){
-      this.connection.rawInput = function(data){if (window.console) window.console.log('RX: ' + data);};
-      this.connection.rawOutput = function(data){if (window.console) window.console.log('Tx: ' + data);};
+      this.connection.rawInput = function(data){console.log('RX: ' + data);};
+      this.connection.rawOutput = function(data){console.log('Tx: ' + data);};
     }
 
-    this.auto_reconnect = true;
+    this.autoReconnect = true;
     this.connection.connect(
       this.jid,
       this.password,
@@ -322,7 +327,7 @@
 
   PubSub.prototype.disconnect = function()
   {
-    this.auto_reconnect = false;
+    this.autoReconnect = false;
     this.disconnect_intern();
   };
 

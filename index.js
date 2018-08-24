@@ -7,7 +7,8 @@
       './order_normalize',
       './data_networks',
       './data_networks_utils',
-      './data_config'
+      './data_config',
+      './js/quote_provider',
     ], factory);
   } else if (typeof module !== 'undefined' && module.exports) {
     // CommonJS (node and other environments that support module.exports)
@@ -16,7 +17,8 @@
       require('./order_normalize'),
       require('./data_networks'),
       require('./data_networks_utils'),
-      require('./data_config')
+      require('./data_config'),
+      require('./js/quote_provider.js')
     );
   }else {
     // Global (browser)
@@ -25,15 +27,17 @@
       root.order_normalize,
       root.data_networks,
       root.data_networks_utils,
-      root.data_config
+      root.data_config,
+      root.quote_provider
     );
   }
-}(this, function (PubSub, orderNormalize, data_networks, data_networks_utils, data_config) {
+}(this, function (PubSub, orderNormalize, dataNetworks, dataNetworksUtils, dataConfig, quoteProvider) {
   return {
     PubSub: PubSub,
     orderNormalize: orderNormalize,
-    data_networks: data_networks,
-    data_networks_utils: data_networks_utils,
-    data_config: data_config
+    dataNetworks: dataNetworks,
+    dataNetworksUtils: dataNetworksUtils,
+    dataConfig: dataConfig,
+    quoteProvider: quoteProvider
   };
 }));

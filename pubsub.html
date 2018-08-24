@@ -213,6 +213,8 @@
 
         $('#connection_status').html('Connecting...');
         pubsub.connect();
+        // ... and subscribe as soon as possible
+        pubsub.subscribe(marketsAddr, marketFactHash);
     };
 
     $('#connect').click(function(event) {
