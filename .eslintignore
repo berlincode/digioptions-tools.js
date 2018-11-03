@@ -1,4 +1,4 @@
 /node_modules/
-/strophe.pubsub.js
-strophe_polyfills.js
+js/strophe.pubsub.js
+js/strophe_polyfills.js
 js/xhr-request-promise.js

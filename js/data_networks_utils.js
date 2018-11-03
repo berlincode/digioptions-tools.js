@@ -32,7 +32,7 @@
       global.data_networks
     );
   }
-})(this, function(data_networks){
+})(this, function(dataNetworks){
 
   function normalizeHexValue(value, bytes){
     value = value.replace(/^0x/, '').toLowerCase();
@@ -48,126 +48,147 @@
     return normalizeHexValue(addr, 32);
   }
 
-  function getDigioptionsUrlNetwork(network, relativeUrl){
-    var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.digioptionsNetworkUrl) === 'undefined'))
-      return null;
-    var url = data_network.digioptionsNetworkUrl;
+  var digioptionsUrlNameToData = {
+    pageStart: {
+      baseUrl: 'index.htm#',
+      args: []
+    },
+    pageNetwork: {
+      baseUrl: 'index.htm#/{network}',
+      args: ['network']
+    },
+    pageMarketList: {
+      baseUrl: 'index.htm#/{network}/{marketsAddr}/list',
+      args: ['network', 'marketsAddr']
+    },
+    pageMarketListSelected: { // same as 'pageMarketList', but with marketFactHash selected
+      baseUrl: 'index.htm#/{network}/{marketsAddr}/{marketFactHash}/list',
+      args: ['network', 'marketsAddr', 'marketFactHash']
+    },
+    pageHistory: { /* contract deposits and withdrawals */
+      baseUrl: 'index.htm#/{network}/{marketsAddr}/depositwithdraw',
+      args: ['network', 'marketsAddr']
+    },
+    pageMarket: {
+      baseUrl: 'index.htm#/{network}/{marketsAddr}/{marketFactHash}',
+      args: ['network', 'marketsAddr', 'marketFactHash']
+    },
+    pageTransactions: {
+      baseUrl: 'index.htm#/{network}/{marketsAddr}/{marketFactHash}/transactions',
+      args: ['network', 'marketsAddr', 'marketFactHash']
+    },
+    /* static files */
+    pageImprint: {
+      baseUrl: 'imprint.htm',
+      args: []
+    }
+  };
+
+  function getDigioptionsUrl(urlName, args, relativeUrl){
+    var dataNetwork = dataNetworks[args.network]; // valid argument network is always required
+    var data = digioptionsUrlNameToData[urlName];
+    var url = data.baseUrl;
+    for (var i=0; i < data.args.length ; i++){
+      var argName = data.args[i];
+      if (argName == 'marketsAddr') {
+        url = url.replace('{marketsAddr}', normalizeMarketsAddr(args.marketsAddr));
+      } else if (argName == 'marketFactHash') {
+        url = url.replace('{marketFactHash}', normalizeMarketFactHash(args.marketFactHash));
+      } else {
+        url = url.replace('{' + argName + '}', args[argName]);
+      }
+    }
     if (relativeUrl)
       return url;
-    return data_network.digioptionsBaseUrl + url;
+    return dataNetwork.digioptionsBaseUrl + url;
   }
 
-  function getDigioptionsUrlContract(network, marketsAddr, relativeUrl){
-    var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.digioptionsContractsUrl) === 'undefined'))
-      return null;
-    var url = data_network.digioptionsContractsUrl.
-      replace('{marketsAddr}', normalizeMarketsAddr(marketsAddr));
-    if (relativeUrl)
-      return url;
-    return data_network.digioptionsBaseUrl + url;
-  }
-
-  function getDigioptionsUrlMarket(network, marketsAddr, marketFactHash, relativeUrl){
-    var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.digioptionsMarketUrl) === 'undefined'))
-      return null;
-    var url = data_network.digioptionsMarketUrl.
-      replace('{marketsAddr}', normalizeMarketsAddr(marketsAddr)).
-      replace('{marketFactHash}', normalizeMarketFactHash(marketFactHash));
-    if (relativeUrl)
-      return url;
-    return data_network.digioptionsBaseUrl + url;
-  }
-  
   function getXmppPubsubViewerUrl(network, marketsAddr, marketFactHash){
-    var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.digioptionsMarketUrl) === 'undefined'))
+    var dataNetwork = dataNetworks[network];
+    if ((typeof(dataNetwork) === 'undefined') || (typeof(dataNetwork.xmppPubsubViewer) === 'undefined'))
       return null;
-    var url = data_network.xmppPubsubViewer.
+    var url = dataNetwork.xmppPubsubViewer.
       replace('{marketsAddr}', normalizeMarketsAddr(marketsAddr)).
       replace('{marketFactHash}', normalizeMarketFactHash(marketFactHash));
     return url;
   }
 
   function getEtherscanUrlContract(network, contractAddr){
-    var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.etherscanAddressUrl) === 'undefined'))
+    var dataNetwork = dataNetworks[network];
+    if ((typeof(dataNetwork) === 'undefined') || (typeof(dataNetwork.etherscanAddressUrl) === 'undefined'))
       return null;
-    return data_network.etherscanAddressUrl.
+    return dataNetwork.etherscanAddressUrl.
       replace('{contractAddr}', normalizeMarketsAddr(contractAddr));
   }
 
   function getEtherscanUrlTx(network, tx){
-    var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.etherscanTxUrl) === 'undefined'))
+    var dataNetwork = dataNetworks[network];
+    if ((typeof(dataNetwork) === 'undefined') || (typeof(dataNetwork.etherscanTxUrl) === 'undefined'))
       return null;
-    return data_network.etherscanTxUrl.replace('{tx}', tx);
+    return dataNetwork.etherscanTxUrl.replace('{tx}', tx);
   }
 
   function getXmppUrlsWebsocket(network){
-    var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.xmppUrlWebsocket) === 'undefined') || (! data_network.xmppPortsWebsocket))
+    var dataNetwork = dataNetworks[network];
+    if ((typeof(dataNetwork) === 'undefined') || (typeof(dataNetwork.xmppUrlWebsocket) === 'undefined') || (! dataNetwork.xmppPortsWebsocket))
       return null;
     var urls = [];
-    for (var i = 0; i < data_network.xmppPortsWebsocket.length; i++) {
-      urls.push(data_network.xmppUrlWebsocket.replace('{port}', data_network.xmppPortsWebsocket[i]));
+    for (var i = 0; i < dataNetwork.xmppPortsWebsocket.length; i++) {
+      urls.push(dataNetwork.xmppUrlWebsocket.replace('{port}', dataNetwork.xmppPortsWebsocket[i]));
     }
     return urls;
   }
 
   function getXmppUrlsHttpBind(network){
-    var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.xmppUrlHttpBind) === 'undefined') || (! data_network.xmppPortsHttpBind))
+    var dataNetwork = dataNetworks[network];
+    if ((typeof(dataNetwork) === 'undefined') || (typeof(dataNetwork.xmppUrlHttpBind) === 'undefined') || (! dataNetwork.xmppPortsHttpBind))
       return null;
     var urls = [];
-    for (var i = 0; i < data_network.xmppPortsHttpBind.length; i++) {
-      urls.push(data_network.xmppUrlHttpBind.replace('{port}', data_network.xmppPortsHttpBind[i]));
+    for (var i = 0; i < dataNetwork.xmppPortsHttpBind.length; i++) {
+      urls.push(dataNetwork.xmppUrlHttpBind.replace('{port}', dataNetwork.xmppPortsHttpBind[i]));
     }
     return urls;
   }
 
   function getXmppPubsubNodePath(network, marketsAddr, marketFactHash){
-    var data_network = data_networks[network];
-    //if ((typeof(data_network) === 'undefined') || (typeof(data_network.xmppPubsubNodePath) === 'undefined'))
+    var dataNetwork = dataNetworks[network];
+    //if ((typeof(dataNetwork) === 'undefined') || (typeof(dataNetwork.xmppPubsubNodePath) === 'undefined'))
     //  return null;
-    return data_network.xmppPubsubNodePath.
+    return dataNetwork.xmppPubsubNodePath.
       replace('{marketsAddr}', normalizeMarketsAddr(marketsAddr)).
       replace('{marketFactHash}', normalizeMarketFactHash(marketFactHash));
   }
 
   function getXmppJidPassword(network){
-    var data_network = data_networks[network];
-    if ((typeof(data_network) === 'undefined') || (typeof(data_network.xmppJidPassword) === 'undefined'))
+    var dataNetwork = dataNetworks[network];
+    if ((typeof(dataNetwork) === 'undefined') || (typeof(dataNetwork.xmppJidPassword) === 'undefined'))
       return [null, null];
-    return data_network.xmppJidPassword;
+    return dataNetwork.xmppJidPassword;
   }
 
   function getProvider(Web3, network){
-    var data_network = data_networks[network];
-    if (data_network.ethProviderType === 'HttpProvider'){
-      return new Web3.providers.HttpProvider(data_network.ethProvider);
+    var dataNetwork = dataNetworks[network];
+    if (dataNetwork.ethProviderType === 'HttpProvider'){
+      return new Web3.providers.HttpProvider(dataNetwork.ethProvider);
     }
-    else if (data_network.ethProviderType === 'WebsocketProvider'){
-      return new Web3.providers.WebsocketProvider(data_network.ethProvider);
+    else if (dataNetwork.ethProviderType === 'WebsocketProvider'){
+      return new Web3.providers.WebsocketProvider(dataNetwork.ethProvider);
     }
-    throw 'unknown providerType: ' + data_network.ethProviderType;
+    throw 'unknown providerType: ' + dataNetwork.ethProviderType;
   }
 
   return {
-    'normalizeMarketsAddr': normalizeMarketsAddr,
-    'normalizeMarketFactHash': normalizeMarketFactHash,
-    'getDigioptionsUrlNetwork': getDigioptionsUrlNetwork,
-    'getDigioptionsUrlContract': getDigioptionsUrlContract,
-    'getDigioptionsUrlMarket': getDigioptionsUrlMarket,
-    'getXmppPubsubViewerUrl': getXmppPubsubViewerUrl,
-    'getEtherscanUrlContract': getEtherscanUrlContract,
-    'getEtherscanUrlTx': getEtherscanUrlTx,
-    'getXmppUrlsWebsocket': getXmppUrlsWebsocket,
-    'getXmppUrlsHttpBind': getXmppUrlsHttpBind,
-    'getXmppPubsubNodePath': getXmppPubsubNodePath,
-    'getXmppJidPassword': getXmppJidPassword,
-    'getProvider': getProvider
+    normalizeMarketsAddr: normalizeMarketsAddr,
+    normalizeMarketFactHash: normalizeMarketFactHash,
+    digioptionsUrlNameToData: digioptionsUrlNameToData,
+    getDigioptionsUrl: getDigioptionsUrl,
+    getXmppPubsubViewerUrl: getXmppPubsubViewerUrl,
+    getEtherscanUrlContract: getEtherscanUrlContract,
+    getEtherscanUrlTx: getEtherscanUrlTx,
+    getXmppUrlsWebsocket: getXmppUrlsWebsocket,
+    getXmppUrlsHttpBind: getXmppUrlsHttpBind,
+    getXmppPubsubNodePath: getXmppPubsubNodePath,
+    getXmppJidPassword: getXmppJidPassword,
+    getProvider: getProvider
   };
 });

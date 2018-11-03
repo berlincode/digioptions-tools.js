@@ -46,7 +46,8 @@
   function BitfinexProvider(symbol){
     this.symbol = symbol;
     this.websocketUrl = 'wss://api.bitfinex.com/ws/2';
-    this.urlBase = 'https://api.bitfinex.com';
+    //this.urlBase = 'https://api.bitfinex.com';
+    this.urlBase = 'https://xmpp.digioptions.com:8086'; // temporary proxy to binfinex
     this.urlPathLast = '/v2/candles/trade:{timeFrame}:{symbolEncoded}/last';
     this.urlPathHist = '/v2/candles/trade:{timeFrame}:{symbolEncoded}/hist?end={endUtcMilliSeconds}&start={startUtcMilliSeconds}&sort=1';
     this.timeFrame = '5m';
@@ -72,7 +73,7 @@
         if (Array.isArray(response[1])){
           var quote = {};
           quote[KeyTimestampMs] = response[2];
-          quote[KeyValue] = response[1][6]; // TODO 6
+          quote[KeyValue] = response[1][6]; // TODO 6 use constants (ie 'MTS')
           realtimeCallback(quote);
         }
       }
@@ -93,6 +94,9 @@
         //quote[KeyValue] = response[...]; // TODO
 
         return Promise.resolve(quote);
+      })
+      .catch(function(error){
+        console.log('quote_provider getLast', error); // TODO handle
       });
   };
 
@@ -118,6 +122,9 @@
       .then(function(answer) {
         var resp = JSON.parse(answer);
         historyCallback(resp);
+      })
+      .catch(function(error){
+        console.log('quote_provider loadHistory', error); // TODO handle
       });
   };
 
