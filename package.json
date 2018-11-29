@@ -1,6 +1,6 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "trading tools for the ethereum based digital option exchange digioptions.com",
   "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
@@ -47,6 +47,6 @@
   "devDependencies": {
     "http-server": "^0.11.1",
     "jquery": "^3.2.1",
-    "eslint": "4.18.2"
+    "eslint": "5.9.0"
   }
 }

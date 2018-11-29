@@ -52,6 +52,7 @@
     this.urlPathHist = '/v2/candles/trade:{timeFrame}:{symbolEncoded}/hist?end={endUtcMilliSeconds}&start={startUtcMilliSeconds}&sort=1';
     this.timeFrame = '5m';
     this.ws = null;
+    this.historyLoadIntervalMs = 60*1000;
   }
 
   BitfinexProvider.prototype.realtime = function(realtimeCallback)
@@ -133,6 +134,7 @@
     if (this.ws) {
       this.ws.close();
       this.ws = null;
+      this.historyLoadIntervalMs = null;
     }
   };
 
@@ -157,6 +159,14 @@
     if (this.provider){
       this.provider.realtime(this.realtime.bind(this));
       this.provider.loadHistory(this.history.bind(this), this.lastDtMilliseconds);
+
+      // TODO
+      /*
+      setInterval(() => {
+        console.log('trigger new loadHistory', symbol);
+        this.provider.loadHistory(this.history.bind(this), this.lastDtMilliseconds);
+      }, 3000);
+      */
     }
   }
 

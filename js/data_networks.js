@@ -22,7 +22,7 @@
       etherscanApiUrl: 'https://api.etherscan.io/api',
       etherscanAddressUrl: 'https://etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://etherscan.io/address/{tx}',
-      marketsDescriptions: [],
+      contractDescriptions: [],
       xmppUrlWebsocket: 'wss://mainnet.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://mainnet.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
@@ -33,7 +33,6 @@
       //ethProvider: 'https://mainnet.infura.io:443', // for HttpProvider; see https://infura.io/docs/#endpoints
       ethProvider: 'wss://mainnet.infura.io/ws', // for WebsocketProvider
       ethProviderType: 'WebsocketProvider', // 'HttpProvider' / 'WebsocketProvider'
-      factsignerContract: true,
       chainId: 0 // TODO
     },
 
@@ -44,7 +43,9 @@
       etherscanApiUrl: 'https://ropsten.etherscan.io/api',
       etherscanAddressUrl: 'https://ropsten.etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://ropsten.etherscan.io/address/{tx}',
-      marketsDescriptions: [
+      contractDescriptions: [
+        //e.g. {addr: '0x0000000000000000000000000000000000000000', name: '<your contract name>', foreign: false},
+        {addr: '0x8a9c968c1fdddfc89b816c909d9b0da109261e35', name: 'Test Contract', foreign: false},
       ],
       xmppUrlWebsocket: 'wss://ropsten.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://ropsten.xmpp.digioptions.com:{port}/http-bind',
@@ -56,7 +57,6 @@
       //ethProvider: 'https://ropsten.infura.io:443', // for HttpProvider
       ethProvider: 'wss://ropsten.infura.io/ws', // for WebsocketProvider
       ethProviderType: 'WebsocketProvider', // 'HttpProvider' / 'WebsocketProvider'
-      factsignerContract: true,
       chainId: 0 // TODO
     },
 
@@ -67,7 +67,7 @@
       etherscanApiUrl: 'https://kovan.etherscan.io/api',
       etherscanAddressUrl: 'https://kovan.etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://kovan.etherscan.io/address/{tx}',
-      marketsDescriptions: [],
+      contractDescriptions: [],
       xmppUrlWebsocket: 'wss://kovan.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://kovan.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
@@ -78,7 +78,6 @@
       //ethProvider: 'https://kovan.infura.io:443', // for HttpProvider
       ethProvider: 'wss://kovan.infura.io/ws', // for WebsocketProvider
       ethProviderType: 'WebsocketProvider', // 'HttpProvider' / 'WebsocketProvider'
-      factsignerContract: true,
       chainId: 0 // TODO
     },
 
@@ -89,7 +88,7 @@
       etherscanApiUrl: 'https://rinkeby.etherscan.io/api',
       etherscanAddressUrl: 'https://rinkeby.etherscan.io/address/{contractAddr}',
       etherscanTxUrl: 'https://rinkeby.etherscan.io/address/{tx}',
-      marketsDescriptions: [],
+      contractDescriptions: [],
       xmppUrlWebsocket: 'wss://rinkeby.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://rinkeby.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
@@ -100,7 +99,6 @@
       //ethProvider: 'https://rinkeby.infura.io:443', // for HttpProvider
       ethProvider: 'wss://rinkeby.infura.io/ws', // for WebsocketProvider
       ethProviderType: 'WebsocketProvider', // 'HttpProvider' / 'WebsocketProvider'
-      factsignerContract: true,
       chainId: 0 // TODO
     }
 

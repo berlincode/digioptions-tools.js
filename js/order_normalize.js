@@ -18,7 +18,7 @@
   /*
   order data example:
   {
-      "addr": "0x0000000000000000000000000000000000000000",
+      "offerOwner": "0x0000000000000000000000000000000000000000",
       "marketsAddr": "0x0000000000000000000000000000000000000000",
       "marketFactHash": "0x1111111111111111111111111111111111111111111111111111111111111111",
       "optionID": 0,
@@ -33,7 +33,7 @@
   */
     var idx, key, list, normalized_order = {};
     //console.log("normalize", order);
-    list = ['addr', 'marketsAddr'];
+    list = ['offerOwner', 'marketsAddr'];
     for (idx=0 ; idx < list.length ; ++idx){
       key = list[idx];
       if ((typeof(order[key]) != 'string') || (order[key].length != 42) || (! order[key].startsWith('0x')))
