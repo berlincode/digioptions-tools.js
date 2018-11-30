@@ -103,152 +103,152 @@
 <script type="text/javascript">
 //<![CDATA[
 
-    // parse browser's query string append parameters
-    var args = {};
-    var query = window.location.search.replace(/^\?/i, '');
-    var vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split('=');
-      args[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+// parse browser's query string append parameters
+var args = {};
+var query = window.location.search.replace(/^\?/i, '');
+var vars = query.split('&');
+for (var i = 0; i < vars.length; i++) {
+  var pair = vars[i].split('=');
+  args[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+}
+
+// set servers/networks from data_networks
+var newOption;
+$.each( data_networks, function( key ) {
+  newOption = new Option(key, key, false, false);
+  $('#network').append(newOption).trigger('change');
+});
+
+for (var key in args) {
+  // check if the property/key is defined in the object itself, not in parent
+  if (args.hasOwnProperty(key)) {           
+    var value = args[key];
+    if (key === 'network')
+      $('#network').val(value);
+    else if (key === 'marketsAddr')
+      $('#marketsAddr').val(value);
+    else if (key === 'marketFactHash')
+      $('#marketFactHash').val(value);
+  }
+}
+
+var pubsub;
+
+$('#publish').click(function(event) {
+  event.preventDefault();
+  var data_array = [];
+  var order;
+  if ($('#message0').length){
+    try {
+      order = JSON.parse($('#message0').val());
+      data_array.push(order);
+    } catch (e) {
+      append_error(e);
     }
-
-    // set servers/networks from data_networks
-    var newOption;
-    $.each( data_networks, function( key ) {
-        newOption = new Option(key, key, false, false);
-        $('#network').append(newOption).trigger('change');
-    });
-
-    for (var key in args) {
-        // check if the property/key is defined in the object itself, not in parent
-        if (args.hasOwnProperty(key)) {           
-            var value = args[key];
-            if (key === 'network')
-                $('#network').val(value);
-            else if (key === 'marketsAddr')
-                $('#marketsAddr').val(value);
-            else if (key === 'marketFactHash')
-                $('#marketFactHash').val(value);
-        }
+  }
+  if ($('#message1').length){
+    try {
+      order = JSON.parse($('#message1').val());
+      data_array.push(order);
+    } catch (e) {
+      append_error(e);
     }
+  }
+  if (data_array.length > 0) {
+    var marketsAddr = $('#marketsAddr').val();
+    var marketFactHash = $('#marketFactHash').val();
+    pubsub.publish(data_array, marketsAddr, marketFactHash);
+  }
+  else
+    append_error('Warning: no order sent');
+});
 
-    var pubsub;
+var pubsub_setup = function(network){
+  var pubsub = new PubSub(network);
 
-    $('#publish').click(function(event) {
-        event.preventDefault();
-        var data_array = [];
-        var order;
-        if ($('#message0').length){
-            try {
-                order = JSON.parse($('#message0').val());
-                data_array.push(order);
-            } catch (e) {
-                append_error(e);
-            }
-        };
-        if ($('#message1').length){
-            try {
-                order = JSON.parse($('#message1').val());
-                data_array.push(order);
-            } catch (e) {
-                append_error(e);
-            }
-        };
-        if (data_array.length > 0) {
-            var marketsAddr = $('#marketsAddr').val();
-            var marketFactHash = $('#marketFactHash').val();
-            pubsub.publish(data_array, marketsAddr, marketFactHash);
-        }
-        else
-            append_error("Warning: no order sent");
-    });
+  pubsub.debug = true;
+  pubsub.on_data = function(data){
+    var i;
+    for (i=0 ; i < data.length ; i++){
+      var p = $('<p>').text(JSON.stringify(data[i]));
+      $('#orders').append(p);
+    }
+    while ($('#orders').children().length > 20){
+      $('#orders p:first-child').remove();
+    }
+  };
+  pubsub.feedback = function(msg, col, connection_ok){
+    $('#connection_status').html(msg).css('color', col);
+    if (connection_ok)
+      $('#publish').fadeIn();
+    else
+      $('#publish').fadeOut();
+  };
+  return pubsub;
+};
 
-    var pubsub_setup = function(network){
-        var pubsub = new PubSub(network);
+var append_error = function(error){
+  var p = $('<p>').text(error);
+  $('#errors').append(p);
+};
 
-        pubsub.debug = true;
-        pubsub.on_data = function(data){
-            var i;
-            for (i=0 ; i < data.length ; i++){
-                var p = $('<p>').text(JSON.stringify(data[i]));
-                $('#orders').append(p);
-            }
-            while ($('#orders').children().length > 20){
-                $("#orders p:first-child").remove();
-            };
-        };
-        pubsub.feedback = function(msg, col, connection_ok){
-            $('#connection_status').html(msg).css('color', col);
-            if (connection_ok)
-                $('#publish').fadeIn();
-            else
-                $('#publish').fadeOut();
-        };
-        return pubsub;
-    };
+var connect = function(){
+  $('#connect').hide();
+  $('#disconnect').show();
 
-    var append_error = function(error){
-        var p = $('<p>').text(error);
-        $('#errors').append(p);
-    };
+  $('#orders').empty(); // clear
+  $('#errors').empty(); // clear
 
-    var connect = function(){
-        $('#connect').hide();
-        $('#disconnect').show();
+  var network = $('#network').val();
+  var marketsAddr = $('#marketsAddr').val();
+  var marketFactHash = $('#marketFactHash').val();
+  var data_network = data_networks[network];
 
-        $('#orders').empty(); // clear
-        $('#errors').empty(); // clear
+  pubsub = pubsub_setup(network);
 
-        var network = $('#network').val();
-        var marketsAddr = $('#marketsAddr').val();
-        var marketFactHash = $('#marketFactHash').val();
-        var data_network = data_networks[network];
+  $('#info_host').text(
+    data_networks_utils.getXmppUrlsWebsocket(network)[0] // TODO
+  );
+  $('#info_path').text(
+    data_networks_utils.getXmppPubsubNodePath(network, marketsAddr, marketFactHash)
+  );
 
-        pubsub = pubsub_setup(network);
+  $('#connection_status').html('Connecting...');
+  pubsub.connect();
+  // ... and subscribe as soon as possible
+  pubsub.subscribe(marketsAddr, marketFactHash);
+};
 
-        $('#info_host').text(
-            data_networks_utils.getXmppUrlsWebsocket(network)[0] // TODO
-        );
-        $('#info_path').text(
-            data_networks_utils.getXmppPubsubNodePath(network, marketsAddr, marketFactHash)
-        );
+$('#connect').click(function(event) {
+  event.preventDefault();
+  connect();
+});
 
-        $('#connection_status').html('Connecting...');
-        pubsub.connect();
-        // ... and subscribe as soon as possible
-        pubsub.subscribe(marketsAddr, marketFactHash);
-    };
+$('#disconnect').click(function(event) {
+  event.preventDefault();
+  $('#connect').show();
+  $('#disconnect').hide();
 
-    $('#connect').click(function(event) {
-        event.preventDefault();
-        connect();
-    });
+  $('#info_host').empty();
+  $('#info_path').empty();
 
-    $('#disconnect').click(function(event) {
-        event.preventDefault();
-        $('#connect').show();
-        $('#disconnect').hide();
+  pubsub.disconnect();
+});
 
-        $('#info_host').empty();
-        $('#info_path').empty();
+$('#clear_orders').click(function(event) {
+  event.preventDefault();
+  $('#orders').empty();
+});
 
-        pubsub.disconnect();
-    });
+$('#clear_errors').click(function(event) {
+  event.preventDefault();
+  $('#errors').empty();
+});
 
-    $('#clear_orders').click(function(event) {
-        event.preventDefault();
-        $('#orders').empty();
-    });
-
-    $('#clear_errors').click(function(event) {
-        event.preventDefault();
-        $('#errors').empty();
-    });
-
-    if (('network' in args) && ('marketsAddr' in args) && ('marketFactHash' in args)){
-        // if all parameters are given we try to connect automatically
-        connect();
-    };
+if (('network' in args) && ('marketsAddr' in args) && ('marketFactHash' in args)){
+  // if all parameters are given we try to connect automatically
+  connect();
+}
 
 //]]>
 </script>

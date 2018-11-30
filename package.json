@@ -1,6 +1,6 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "description": "trading tools for the ethereum based digital option exchange digioptions.com",
   "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
@@ -11,22 +11,24 @@
   },
   "scripts": {
     "serve": "http-server . -a 127.0.0.1 -p 8888 -c-1",
-    "eslint": "eslint ./"
+    "eslint": "eslint ./js/*.js ./*.html"
   },
   "files": [
     "css/styles.css",
-    "data_config.js",
-    "data_networks.js",
-    "data_networks_utils.js",
-    "index.js",
-    "LICENSE",
-    "order_normalize.js",
-    "pubsub.html",
-    "pubsub.js",
-    "strophe_polyfills.js",
-    "strophe.pubsub.js",
+    "js/data_config.js",
+    "js/data_networks.js",
+    "js/data_networks_utils.js",
+    "js/index.js",
+    "js/order_normalize.js",
+    "js/pubsub.js",
     "js/quote_provider.js",
-    "js/xhr-request-promise.js"
+    "js/strophe_node_polyfills.js",
+    "js/strophe_polyfills.js",
+    "js/strophe.pubsub.js",
+    "js/xhr-request-promise.js",
+    "LICENSE",
+    "pubsub.html",
+    "README.md"
   ],
   "repository": {
     "type": "git",
@@ -45,6 +47,7 @@
     "xhr2": "^0.1.4"
   },
   "devDependencies": {
+    "eslint-plugin-html": "^5.0.0",
     "http-server": "^0.11.1",
     "jquery": "^3.2.1",
     "eslint": "5.9.0"

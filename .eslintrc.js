@@ -36,5 +36,8 @@ module.exports = {
             "error",
             "never"
         ]
-    }
+    },
+    "plugins": [
+        "html",
+    ]
 };
