@@ -1,30 +1,34 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.12.0",
+  "version": "0.23.0",
   "description": "trading tools for the ethereum based digital option exchange digioptions.com",
   "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
-  "main": "index.js",
+  "main": "js/index.js",
   "author": {
     "name": "Ulf Bartel",
     "email": "elastic.code@gmail.com"
   },
   "scripts": {
     "serve": "http-server . -a 127.0.0.1 -p 8888 -c-1",
-    "eslint": "eslint ./"
+    "eslint": "eslint ./js/*.js ./*.html"
   },
   "files": [
     "css/styles.css",
-    "data_config.js",
-    "data_networks.js",
-    "data_networks_utils.js",
-    "index.js",
+    "js/data_config.js",
+    "js/data_networks.js",
+    "js/data_networks_utils.js",
+    "js/index.js",
+    "js/order_normalize.js",
+    "js/pubsub.js",
+    "js/quote_provider.js",
+    "js/strophe_node_polyfills.js",
+    "js/strophe_polyfills.js",
+    "js/strophe.pubsub.js",
+    "js/xhr-request-promise.js",
     "LICENSE",
-    "order_normalize.js",
     "pubsub.html",
-    "pubsub.js",
-    "strophe_polyfills.js",
-    "strophe.pubsub.js"
+    "README.md"
   ],
   "repository": {
     "type": "git",
@@ -36,11 +40,16 @@
     "ethereum"
   ],
   "dependencies": {
-    "strophe.js": "git+https://github.com/strophe/strophejs.git#c3b7e8619347ef2b800a3f4943fe64fce6540af1"
+    "jsdom": "^11.0.0",
+    "strophe.js": "git+https://github.com/strophe/strophejs.git#c3b7e8619347ef2b800a3f4943fe64fce6540af1",
+    "ws": "6.0.0",
+    "xhr-request-promise": "^0.1.2",
+    "xhr2": "^0.1.4"
   },
   "devDependencies": {
-    "eslint": "4.18.2",
-    "http-server": "^0.10.0",
+    "eslint": "5.9.0",
+    "eslint-plugin-html": "^5.0.0",
+    "http-server": "^0.11.1",
     "jquery": "^3.2.1"
   }
 }
