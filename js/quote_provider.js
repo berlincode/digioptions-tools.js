@@ -42,47 +42,120 @@
   var KeyTimestampMs = 'timestampMs';
   var KeyValue = 'value';
 
+  function reverseMap(resource){
+    var reverse = {};
+    for(var propName in resource)
+    {
+      reverse[resource[propName]]=propName;
+    }
+    return reverse;
+  }
 
-  function BitfinexProvider(symbol){
-    this.symbol = symbol;
+  var symbolMapBitfinex = {
+    'BTC/USDT': 'tBTCUSD',
+    'ETH/USDT': 'tETHUSD'
+  };
+
+  function BitfinexProvider(realtimeCallback){
     this.websocketUrl = 'wss://api.bitfinex.com/ws/2';
     //this.urlBase = 'https://api.bitfinex.com';
-    this.urlBase = 'https://xmpp.digioptions.com:8086'; // temporary proxy to binfinex
+    this.urlBase = 'https://xmpp.digioptions.com:8086'; // temporary proxy to bitfinex
     this.urlPathLast = '/v2/candles/trade:{timeFrame}:{symbolEncoded}/last';
     this.urlPathHist = '/v2/candles/trade:{timeFrame}:{symbolEncoded}/hist?end={endUtcMilliSeconds}&start={startUtcMilliSeconds}&sort=1';
     this.timeFrame = '5m';
+    this.reconnect = true;
     this.ws = null;
-    this.historyLoadIntervalMs = 60*1000;
+    this.info = {
+      name: 'bitfinex',
+      url: 'https://www.bitfinex.com/'
+    };
+    this.symbolMapReverse = reverseMap(symbolMapBitfinex);
+    this.mapChanIdToSymbol = {};
+    this.symbolsToSubscribe = {};
+    this.realtimeCallback = realtimeCallback;
   }
 
-  BitfinexProvider.prototype.realtime = function(realtimeCallback)
-  {
+  BitfinexProvider.prototype.getSymbolMapReverse = function(symbol){
+    return this.symbolMapReverse[symbol];
+  };
+
+  BitfinexProvider.prototype.sendSubscribe = function(symbol){
+    this.ws.send(JSON.stringify({'event': 'subscribe', 'channel': 'ticker', 'symbol': symbol}));
+  };
+
+  BitfinexProvider.prototype.wsSetup = function(){
+    var that = this;
+
+    this.mapChanIdToSymbol = {}; // clear mapping before (re)connect
+
     this.ws = new WebSocket(this.websocketUrl);
 
-    var that = this;
     this.ws.onopen = function() {
       that.ws.send(JSON.stringify({'event': 'conf', flags: 32768})); // TODO 32768 TIMESTAMP as const
-      that.ws.send(JSON.stringify({'event': 'subscribe', 'channel': 'ticker', 'symbol': that.symbol}));
+      for (var symbol in that.symbolsToSubscribe){
+        that.sendSubscribe(symbol);
+      }
     };
 
     this.ws.onmessage = function(msg) {
       var response = JSON.parse(msg.data);
+      //console.log(response);
+      if (response.event === 'subscribed'){
+        that.mapChanIdToSymbol[response.chanId] = that.getSymbolMapReverse(response.symbol);
+        return;
+      }
       if (Array.isArray(response) && (response.length >= 3)){
         // we are receiving objects (on subscribtion) and array for subscribed values
         // response[1] might be 'hb' for heartbeat
         //console.log(response);
-        if (Array.isArray(response[1])){
+        var chanId = response[0];
+        var symbol = that.mapChanIdToSymbol[chanId];
+        if (Array.isArray(response[1]) && symbol){
           var quote = {};
           quote[KeyTimestampMs] = response[2];
           quote[KeyValue] = response[1][6]; // TODO 6 use constants (ie 'MTS')
-          realtimeCallback(quote);
+          that.realtimeCallback(symbol, quote);
         }
+      }
+    };
+
+    this.ws.onclose = function(){
+      if (that.reconnect){
+        // try to reconnect in 5 seconds
+        setTimeout(
+          function(){
+            if (that.reconnect)
+              that.wsSetup();
+          },
+          5000
+        );
       }
     };
   };
 
-  BitfinexProvider.prototype.getLast = function() {
-    var symbolEncoded = encodeURIComponent(this.symbol);
+  BitfinexProvider.prototype.realtime = function(symbol) {
+    if (this.symbolsToSubscribe[symbol]){
+      return;
+    }
+
+    this.symbolsToSubscribe[symbol] = true;
+
+    if (this.ws){
+      //console.log('ret', symbol);
+
+      if (this.ws.readyState === this.ws.OPEN){
+        this.sendSubscribe(symbol);
+        return;
+      }
+      //console.log('not yet open');
+      return;
+    }
+
+    this.wsSetup();
+  };
+
+  BitfinexProvider.prototype.getLast = function(symbol) {
+    var symbolEncoded = encodeURIComponent(symbol);
     var pathLast = this.urlPathLast
       .replace('{symbolEncoded}', symbolEncoded)
       .replace('{timeFrame}', this.timeFrame);
@@ -101,11 +174,11 @@
       });
   };
 
-  BitfinexProvider.prototype.loadHistory = function(historyCallback, lastDtMilliseconds)
+  BitfinexProvider.prototype.loadHistory = function(symbol, historyCallback, lastDtMilliseconds)
   {
-    var symbolEncoded = encodeURIComponent(this.symbol);
+    var symbolEncoded = encodeURIComponent(symbol);
     var that = this;
-    this.getLast()
+    this.getLast(symbol)
       .then(function(quote) {
         var lastDtMsBitfinex = quote[KeyTimestampMs];
         if (lastDtMsBitfinex > lastDtMilliseconds){
@@ -132,71 +205,76 @@
   BitfinexProvider.prototype.close = function()
   {
     if (this.ws) {
+      this.reconnect = false;
       this.ws.close();
       this.ws = null;
-      this.historyLoadIntervalMs = null;
     }
   };
 
-  BitfinexProvider.prototype.info = function()
-  {
-    return {
-      name: 'bitfinex',
-      url: 'https://www.bitfinex.com/'
-    };
-  };
-
-
-  function QuoteProvider(symbol, lastDtMilliseconds, historyCallback, realtimeCallback){
-    'use strict';
-
-    this.symbol = symbol;
-    this.lastDtMilliseconds = lastDtMilliseconds;
-    this.historyCallback = historyCallback;
-    this.realtimeCallback = realtimeCallback;
-    this.provider = this.getProviderFromSymbol(symbol);
-
-    if (this.provider){
-      this.provider.realtime(this.realtime.bind(this));
-      this.provider.loadHistory(this.history.bind(this), this.lastDtMilliseconds);
-
-      // TODO
-      /*
-      setInterval(() => {
-        console.log('trigger new loadHistory', symbol);
-        this.provider.loadHistory(this.history.bind(this), this.lastDtMilliseconds);
-      }, 3000);
-      */
-    }
+  function bitfinexInstantiate(realtimeCallback){
+    return new BitfinexProvider(realtimeCallback);
   }
 
-  QuoteProvider.prototype.getProviderFromSymbol = function(symbol){
-    var provider;
-
-    if (symbol === 'BTC/USD'){
-      //symbol = 'tETHUSD'; // TODO
-      symbol = 'tBTCUSD'; // TODO
-      provider = new BitfinexProvider(symbol);
+  var symbolFuncToProviderInstantiate = [
+    function(symbol){
+      if (symbolMapBitfinex[symbol]){
+        return {
+          name: 'bitfinex',
+          instantiateFunc: bitfinexInstantiate,
+          symbol: symbolMapBitfinex[symbol]
+        };
+      }
+      return null;
     }
-    return provider;
+  ];
+
+  function QuoteProvider(realtimeCallback, historyCallback){
+    'use strict';
+
+    this.providers = {};
+    this.realtimeCallback = realtimeCallback;
+    this.historyCallback = historyCallback;
+  }
+
+  QuoteProvider.prototype.getProviderInstance = function(providerInfo){
+    if (! this.providers[providerInfo.name]){
+      // new provider
+      this.providers[providerInfo.name] = providerInfo.instantiateFunc(this.realtimeCallback);
+    }
+    return this.providers[providerInfo.name];
   };
 
-  QuoteProvider.prototype.getProvider = function()
-  {
-    // to check if a provider for symbol was found
-    return this.provider;
+  QuoteProvider.prototype.setup = function(providerInfo){
+    var provider = this.getProviderInstance(providerInfo);
+
+    if (provider){
+      provider.realtime(providerInfo.symbol);
+    }
   };
 
-  QuoteProvider.prototype.realtime = function(resp)
+  QuoteProvider.prototype.loadHistory = function(providerInfo, lastDtMilliseconds){
+    var provider = this.getProviderInstance(providerInfo);
+
+    if (provider){
+      provider.loadHistory(providerInfo.symbol, this.history.bind(this), lastDtMilliseconds);
+    }
+  };
+
+  QuoteProvider.prototype.getProviderDataFromSymbol = function(symbol){
+    var i;
+    for (i=0 ; i < symbolFuncToProviderInstantiate.length ; i ++){
+      var providerData = symbolFuncToProviderInstantiate[i](symbol); 
+      if (providerData){
+        return providerData;
+      }
+    }
+    return null;
+  };
+
+  QuoteProvider.prototype.realtime = function(symbol, resp)
   {
-    // we push the quote (once) even if > lastDtMilliseconds
-    // so we know that the marked is due for settlement
     if (this.realtimeCallback)
-      this.realtimeCallback(this.symbol, resp);
-
-    if (resp[KeyTimestampMs] > this.lastDtMilliseconds){
-      this.close();
-    }
+      this.realtimeCallback(symbol, resp);
   };
 
   QuoteProvider.prototype.history = function(resp)
@@ -207,22 +285,24 @@
 
   QuoteProvider.prototype.close = function()
   {
-    if (this.provider) {
-      this.provider.close();
-    }
-  };
+    // no more callbacks
+    this.historyCallback = null;
+    this.realtimeCallback = null;
 
-  QuoteProvider.prototype.info = function()
-  {
-    if (this.provider)
-      return this.provider.info();
-    return null;
+    for (var key in this.providers) {
+      if (this.providers.hasOwnProperty(key)) {
+        this.providers[key].close();
+        //console.log('closing', key);
+      }
+    }
+
   };
 
   return {
     'QuoteProvider': QuoteProvider,
     'BitfinexProvider': BitfinexProvider,
     'KeyTimestampMs': KeyTimestampMs,
-    'KeyValue': KeyValue
+    'KeyValue': KeyValue,
+    'symbolFuncToProviderInstantiate': symbolFuncToProviderInstantiate
   };
 });

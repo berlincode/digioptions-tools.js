@@ -114,7 +114,7 @@ for (var i = 0; i < vars.length; i++) {
 
 // set servers/networks from data_networks
 var newOption;
-$.each( data_networks, function( key ) {
+$.each(window.data_networks, function(key) {
   newOption = new Option(key, key, false, false);
   $('#network').append(newOption).trigger('change');
 });
@@ -164,7 +164,7 @@ $('#publish').click(function(event) {
 });
 
 var pubsub_setup = function(network){
-  var pubsub = new PubSub(network);
+  var pubsub = new window.PubSub(network);
 
   pubsub.debug = true;
   pubsub.on_data = function(data){
@@ -202,15 +202,14 @@ var connect = function(){
   var network = $('#network').val();
   var marketsAddr = $('#marketsAddr').val();
   var marketFactHash = $('#marketFactHash').val();
-  var data_network = data_networks[network];
 
   pubsub = pubsub_setup(network);
 
   $('#info_host').text(
-    data_networks_utils.getXmppUrlsWebsocket(network)[0] // TODO
+    window.data_networks_utils.getXmppUrlsWebsocket(network)[0] // TODO
   );
   $('#info_path').text(
-    data_networks_utils.getXmppPubsubNodePath(network, marketsAddr, marketFactHash)
+    window.data_networks_utils.getXmppPubsubNodePath(network, marketsAddr, marketFactHash)
   );
 
   $('#connection_status').html('Connecting...');

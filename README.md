@@ -1,7 +1,7 @@
 digioptions-tools.js
 ====================
 
-Trading tools for the ethereum based digital option exchange digioptions.com.
+Trading tools for the ethereum based digital options exchange digioptions.com.
 
 Components:
 -----------

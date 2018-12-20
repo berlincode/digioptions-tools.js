@@ -61,7 +61,7 @@
       // no connection possible
       throw 'no valid xmpp service url found';
     }
- 
+
     // we use the first service found for now ...
     this.service = this.services_all[0];
 
