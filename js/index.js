@@ -32,12 +32,28 @@
     );
   }
 }(this, function (PubSub, orderNormalize, dataNetworks, dataNetworksUtils, dataConfig, quoteProvider) {
+
+  function typeDurationToString(typeDuration){
+    var duration;
+    switch (typeDuration) {
+    case 0: duration = 'yearly'; break;
+    case 1: duration = 'monthly'; break;
+    case 2: duration = 'weekly'; break;
+    case 3: duration = 'daily'; break;
+    case 4: duration = 'hourly'; break;
+    case 5: duration = 'short term'; break; // TODO better name
+    default: duration = '-' ; break;
+    }
+    return duration;
+  }
+
   return {
     PubSub: PubSub,
     orderNormalize: orderNormalize,
     dataNetworks: dataNetworks,
     dataNetworksUtils: dataNetworksUtils,
     dataConfig: dataConfig,
-    quoteProvider: quoteProvider
+    quoteProvider: quoteProvider,
+    typeDurationToString: typeDurationToString
   };
 }));
