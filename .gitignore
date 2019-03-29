@@ -1,6 +1,6 @@
 node_modules
 README.html
-js/digioptions_test_network.js
 *.custom*
+_*
 npm-debug.log
 dist
