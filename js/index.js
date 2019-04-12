@@ -47,6 +47,66 @@
     return duration;
   }
 
+  function padZero(i) {
+    if (i < 10) {
+      i = '0' + i;
+    }
+    return i;
+  }
+
+  var dateStringUTCTOD = function(date) {
+    return (
+      padZero(date.getUTCHours()) +
+      ':' +
+      padZero(date.getUTCMinutes()) +
+      ':' +
+      padZero(date.getUTCSeconds())
+    );
+  };
+
+  var dateStringUTC = function(date) {
+    return (
+      date.getUTCFullYear() +
+      '-' +
+      padZero(date.getUTCMonth() + 1) +
+      '-' +
+      padZero(date.getUTCDate()) +
+      ' ' +
+      dateStringUTCTOD(date)
+    );
+  };
+
+  var dateStringUTCTZ = function(date) {
+    return dateStringUTC(date) + '+00';
+  };
+
+  var dateStringLocalTOD = function(date) {
+    return (
+      padZero(date.getHours()) +
+      ':' +
+      padZero(date.getMinutes()) +
+      ':' +
+      padZero(date.getSeconds())
+    );
+  };
+
+  var dateStringLocal = function(date) {
+    return (
+      date.getFullYear() +
+      '-' +
+      padZero(date.getMonth() + 1) +
+      '-' +
+      padZero(date.getDate()) +
+      ' ' +
+      dateStringLocalTOD(date)
+    );
+  };
+
+  var dateStringLocalTZ = function(date) {
+    var tzOffset = -date.getTimezoneOffset()/60;
+    return dateStringLocal(date) + (tzOffset < 0 ? '-' : '+') + padZero(Math.abs(tzOffset));
+  };
+
   return {
     PubSub: PubSub,
     orderNormalize: orderNormalize,
@@ -54,6 +114,12 @@
     dataNetworksUtils: dataNetworksUtils,
     dataConfig: dataConfig,
     quoteProvider: quoteProvider,
-    typeDurationToString: typeDurationToString
+    typeDurationToString: typeDurationToString,
+    dateStringUTCTOD: dateStringUTCTOD,
+    dateStringUTC: dateStringUTC,
+    dateStringUTCTZ: dateStringUTCTZ,
+    dateStringLocalTOD: dateStringLocalTOD,
+    dateStringLocal: dateStringLocal,
+    dateStringLocalTZ: dateStringLocalTZ
   };
 }));
