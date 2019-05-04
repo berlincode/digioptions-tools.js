@@ -4,7 +4,7 @@
     // AMD
     define([
       './pubsub',
-      './order_normalize',
+      './offer_normalize',
       './data_networks',
       './data_networks_utils',
       './data_config',
@@ -14,7 +14,7 @@
     // CommonJS (node and other environments that support module.exports)
     module.exports = factory(
       require('./pubsub'),
-      require('./order_normalize'),
+      require('./offer_normalize'),
       require('./data_networks'),
       require('./data_networks_utils'),
       require('./data_config'),
@@ -24,14 +24,14 @@
     // Global (browser)
     root.digioptionsTools = factory(
       root.PubSub,
-      root.order_normalize,
+      root.offer_normalize,
       root.data_networks,
       root.data_networks_utils,
       root.data_config,
       root.quote_provider
     );
   }
-}(this, function (PubSub, orderNormalize, dataNetworks, dataNetworksUtils, dataConfig, quoteProvider) {
+}(this, function (PubSub, offerNormalize, dataNetworks, dataNetworksUtils, dataConfig, quoteProvider) {
 
   function typeDurationToString(typeDuration){
     var duration;
@@ -109,7 +109,7 @@
 
   return {
     PubSub: PubSub,
-    orderNormalize: orderNormalize,
+    offerNormalize: offerNormalize,
     dataNetworks: dataNetworks,
     dataNetworksUtils: dataNetworksUtils,
     dataConfig: dataConfig,
