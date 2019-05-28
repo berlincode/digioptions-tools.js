@@ -1,6 +1,6 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "description": "trading tools for the ethereum based digital options exchange digioptions.com",
   "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "js/data_networks.js",
     "js/data_networks_utils.js",
     "js/index.js",
-    "js/order_normalize.js",
+    "js/offer_normalize.js",
     "js/pubsub.js",
     "js/quote_provider.js",
     "js/strophe_node_polyfills.js",
