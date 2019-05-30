@@ -26,11 +26,12 @@
       xmppUrlHttpBind: 'https://mainnet.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
-      xmppPubsubNodePath: '/v1/mainnet/{marketsAddr}/{marketFactHash}',
+      xmppPubsubNodePath: '/v1/mainnet/{marketsAddr}/{marketHash}',
       xmppJidPassword: ['anon@mainnet.xmpp.digioptions.com', 'password'],
-      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=main&marketsAddr={marketsAddr}&marketFactHash={marketFactHash}',
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=main&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProvider: 'wss://mainnet.infura.io/ws', // for WebsocketProvider
-      chainId: 0 // TODO
+      netId: 1,
+      chainId: null
     },
 
     'ropsten': {
@@ -41,17 +42,18 @@
       etherscanTxUrl: 'https://ropsten.etherscan.io/address/{tx}',
       contractDescriptions: [
         //e.g. {addr: '0x0000000000000000000000000000000000000000', name: '<your contract name>', foreign: false},
-        {addr: '0x8a9c968c1fdddfc89b816c909d9b0da109261e35', name: 'Test Contract', foreign: false},
+        {addr: '0x4c3f03d739CB32d914E3A6CffCF4d5bB40a2c7cc', name: 'Test Contract', foreign: false},
       ],
       xmppUrlWebsocket: 'wss://ropsten.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://ropsten.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
-      xmppPubsubNodePath: '/v1/ropsten/{marketsAddr}/{marketFactHash}',
+      xmppPubsubNodePath: '/v1/ropsten/{marketsAddr}/{marketHash}',
       xmppJidPassword: ['anon@ropsten.xmpp.digioptions.com', 'password'],
-      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ropsten&marketsAddr={marketsAddr}&marketFactHash={marketFactHash}',
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ropsten&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProvider: 'wss://ropsten.infura.io/ws', // for WebsocketProvider
-      chainId: 0 // TODO
+      netId: 3,
+      chainId: null
     },
 
     'kovan': {
@@ -65,11 +67,12 @@
       xmppUrlHttpBind: 'https://kovan.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
-      xmppPubsubNodePath: '/v1/kovan/{marketsAddr}/{marketFactHash}',
+      xmppPubsubNodePath: '/v1/kovan/{marketsAddr}/{marketHash}',
       xmppJidPassword: ['anon@kovan.xmpp.digioptions.com', 'password'],
-      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=kovan&marketsAddr={marketsAddr}&marketFactHash={marketFactHash}',
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=kovan&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProvider: 'wss://kovan.infura.io/ws', // for WebsocketProvider
-      chainId: 0 // TODO
+      netId: 42,
+      chainId: null
     },
 
     'rinkeby': {
@@ -84,12 +87,32 @@
       xmppUrlHttpBind: 'https://rinkeby.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
-      xmppPubsubNodePath: '/v1/rinkeby/{marketsAddr}/{marketFactHash}',
+      xmppPubsubNodePath: '/v1/rinkeby/{marketsAddr}/{marketHash}',
       xmppJidPassword: ['anon@rinkeby.xmpp.digioptions.com', 'password'],
-      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=rinkeby&marketsAddr={marketsAddr}&marketFactHash={marketFactHash}',
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=rinkeby&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProvider: 'wss://rinkeby.infura.io/ws', // for WebsocketProvider
-      chainId: 0 // TODO
-    }
+      netId: 4,
+      chainId: null
+    },
 
+    'goerli': {
+      description: 'Cross-client proof-of-authority test network',
+      testnet: true,
+      digioptionsBaseUrl: 'https://www.digioptions.com/redirect.html',
+      //etherscanApiUrl: 'https://goerli.etherscan.io/api',
+      etherscanAddressUrl: 'https://goerli.etherscan.io/address/{contractAddr}',
+      etherscanTxUrl: 'https://goerli.etherscan.io/address/{tx}',
+      contractDescriptions: [],
+      xmppUrlWebsocket: 'wss://goerli.xmpp.digioptions.com:{port}/websocket',
+      xmppUrlHttpBind: 'https://goerli.xmpp.digioptions.com:{port}/http-bind',
+      xmppPortsWebsocket: [5280],
+      xmppPortsHttpBind: [5280],
+      xmppPubsubNodePath: '/v1/goerli/{marketsAddr}/{marketHash}',
+      xmppJidPassword: ['anon@goerli.xmpp.digioptions.com', 'password'],
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=goerli&marketsAddr={marketsAddr}&marketHash={marketHash}',
+      ethProvider: 'wss://goerli.infura.io/ws', // for WebsocketProvider
+      netId: 5,
+      chainId: null
+    }
   };
 });

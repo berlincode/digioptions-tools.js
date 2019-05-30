@@ -31,8 +31,8 @@
         marketsAddr:
         <input type="text" name="marketsAddr" id="marketsAddr" value="0x000000000000000000000000000000000000000" />
         <br/>
-        marketFactHash:
-        <input type="text" name="marketFactHash" id="marketFactHash" value="0x0000000000000000000000000000000000000000000000000000000000000000" />
+        marketHash:
+        <input type="text" name="marketHash" id="marketHash" value="0x0000000000000000000000000000000000000000000000000000000000000000" />
         <br/>
         <button id="connect" type="submit">Connect</button>
         <button id="disconnect" type="submit" style="display:none;">Disconnect</button>
@@ -48,12 +48,12 @@
               <textarea id="message0" name="message0" rows="13" autofocus>{
   "offerOwner": "0x0000000000000000000000000000000000000000",
   "marketsAddr": "0x0000000000000000000000000000000000000000",
-  "marketFactHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "marketHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "buy": true,
   "optionID": 0,
   "price" :0,
   "size": 1000000000000000000,
-  "orderID": 4321098765,
+  "offerID": 4321098765,
   "blockExpires": 1234567,
   "r": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "s": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -66,12 +66,12 @@
               <textarea id="message1" name="message1" rows="13">{
   "offerOwner": "0x0000000000000000000000000000000000000000",
   "marketsAddr": "0x0000000000000000000000000000000000000000",
-  "marketFactHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "marketHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "buy": true,
   "optionID": 0,
   "price" :0,
   "size": 1000000000000000000,
-  "orderID": 4321098765,
+  "offerID": 4321098765,
   "blockExpires": 1234567,
   "r": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "s": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -127,8 +127,8 @@ for (var key in args) {
       $('#network').val(value);
     else if (key === 'marketsAddr')
       $('#marketsAddr').val(value);
-    else if (key === 'marketFactHash')
-      $('#marketFactHash').val(value);
+    else if (key === 'marketHash')
+      $('#marketHash').val(value);
   }
 }
 
@@ -156,8 +156,8 @@ $('#publish').click(function(event) {
   }
   if (data_array.length > 0) {
     var marketsAddr = $('#marketsAddr').val();
-    var marketFactHash = $('#marketFactHash').val();
-    pubsub.publish(data_array, marketsAddr, marketFactHash);
+    var marketHash = $('#marketHash').val();
+    pubsub.publish(data_array, marketsAddr, marketHash);
   }
   else
     append_error('Warning: no order sent');
@@ -201,7 +201,7 @@ var connect = function(){
 
   var network = $('#network').val();
   var marketsAddr = $('#marketsAddr').val();
-  var marketFactHash = $('#marketFactHash').val();
+  var marketHash = $('#marketHash').val();
 
   pubsub = pubsub_setup(network);
 
@@ -209,13 +209,13 @@ var connect = function(){
     window.data_networks_utils.getXmppUrlsWebsocket(network)[0] // TODO
   );
   $('#info_path').text(
-    window.data_networks_utils.getXmppPubsubNodePath(network, marketsAddr, marketFactHash)
+    window.data_networks_utils.getXmppPubsubNodePath(network, marketsAddr, marketHash)
   );
 
   $('#connection_status').html('Connecting...');
   pubsub.connect();
   // ... and subscribe as soon as possible
-  pubsub.subscribe(marketsAddr, marketFactHash);
+  pubsub.subscribe(marketsAddr, marketHash);
 };
 
 $('#connect').click(function(event) {
@@ -244,7 +244,7 @@ $('#clear_errors').click(function(event) {
   $('#errors').empty();
 });
 
-if (('network' in args) && ('marketsAddr' in args) && ('marketFactHash' in args)){
+if (('network' in args) && ('marketsAddr' in args) && ('marketHash' in args)){
   // if all parameters are given we try to connect automatically
   connect();
 }
