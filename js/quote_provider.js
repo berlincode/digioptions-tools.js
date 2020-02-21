@@ -5,8 +5,8 @@
     Copyright (c) digioptions.com (https://www.digioptions.com)
 */
 
-/** File: quote_provider.js
- *  A helper ...
+/**
+ * A helper ...
  */
 // TODO add limit > 100 to display 24h at 5m interval
 // TODO add bitfinex key
@@ -42,6 +42,17 @@
   var KeyTimestampMs = 'timestampMs';
   var KeyValue = 'value';
 
+  var idxPrice = 6;
+
+  var IdxHist = {
+    mts: 0, //MTS / int / millisecond time stamp
+    open: 1, //OPEN / float / First execution during the time frame
+    close: 2, //CLOSE / float / Last execution during the time frame
+    high: 3, //HIGH / float / Highest execution during the time frame
+    low: 4, //LOW / float / Lowest execution during the timeframe
+    volume: 5 //VOLUME / float / Quantity of symbol traded within the timeframe
+  };
+
   function reverseMap(resource){
     var reverse = {};
     for(var propName in resource)
@@ -53,7 +64,8 @@
 
   var symbolMapBitfinex = {
     'BTC/USDT': 'tBTCUSD',
-    'ETH/USDT': 'tETHUSD'
+    'ETH/USDT': 'tETHUSD',
+    'XRP/USDT': 'tXRPUSD'
   };
 
   function BitfinexProvider(realtimeCallback){
@@ -113,7 +125,7 @@
         if (Array.isArray(response[1]) && symbol){
           var quote = {};
           quote[KeyTimestampMs] = response[2];
-          quote[KeyValue] = response[1][6]; // TODO 6 use constants (ie 'MTS')
+          quote[KeyValue] = response[1][idxPrice]; // TODO 6 use constants (ie 'MTS')
           that.realtimeCallback(symbol, quote);
         }
       }
@@ -194,10 +206,20 @@
         return request(urlHist, {method: 'GET'});
       })
       .then(function(response) {
+        // response might be something like (at least with the proxy)
+        //{"code": 503, "error": "temporarily_unavailable", "error_description": "Sorry, the service is temporarily unavailable. See https://www.bitfinex.com/ for more info."}
         var resp = JSON.parse(response);
-        historyCallback(resp);
+        if (Array.isArray(resp)){
+          // ok
+          historyCallback(null /* err */, resp);
+        } else {
+          // error
+//console.log('res', resp);
+          historyCallback(resp, null);
+        }
       })
       .catch(function(error){
+//          historyCallback(resp);
         console.log('quote_provider loadHistory', error); // TODO handle
       });
   };
@@ -266,10 +288,10 @@
       this.realtimeCallback(symbol, resp);
   };
 
-  QuoteProvider.prototype.history = function(resp)
+  QuoteProvider.prototype.history = function(err, resp)
   {
     if (this.historyCallback)
-      this.historyCallback(this.symbol, resp);
+      this.historyCallback(err, resp);
   };
 
   QuoteProvider.prototype.close = function()
@@ -289,16 +311,16 @@
 
   };
 
-  var getProviderDataFromSymbol = function(symbol){
+  function getProviderDataFromSymbol(symbol){
     var i;
     for (i=0 ; i < symbolFuncToProviderInstantiate.length ; i ++){
-      var providerData = symbolFuncToProviderInstantiate[i](symbol); 
+      var providerData = symbolFuncToProviderInstantiate[i](symbol);
       if (providerData){
         return providerData;
       }
     }
     return null;
-  };
+  }
 
   return {
     'QuoteProvider': QuoteProvider,
@@ -306,6 +328,7 @@
     'BitfinexProvider': BitfinexProvider,
     'KeyTimestampMs': KeyTimestampMs,
     'KeyValue': KeyValue,
+    'IdxHist': IdxHist,
     'symbolFuncToProviderInstantiate': symbolFuncToProviderInstantiate
   };
 });

@@ -1,6 +1,6 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.29.0",
+  "version": "0.30.0",
   "description": "trading tools for the ethereum based digital options exchange digioptions.com",
   "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
@@ -16,6 +16,7 @@
   "files": [
     "css/styles.css",
     "js/data_config.js",
+    "js/data_digioptions.js",
     "js/data_networks.js",
     "js/data_networks_utils.js",
     "js/index.js",
@@ -42,16 +43,16 @@
   "dependencies": {
     "jsdom": "^11.0.0",
     "strophe.js": "git+https://github.com/strophe/strophejs.git#c3b7e8619347ef2b800a3f4943fe64fce6540af1",
-    "ws": "^6.2.1",
+    "ws": "^7.0.0",
     "xhr-request-promise": "^0.1.2",
     "xhr2": "^0.1.4"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-plugin-html": "^5.0.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-html": "^6.0.0",
     "eslint-plugin-ie11": "^1.0.0",
-    "http-server": "^0.11.1",
-    "jquery": "^3.3.1",
+    "http-server": "~0.12.0",
+    "jquery": "^3.4.1",
     "requirejs": "2.3.6"
   }
 }
