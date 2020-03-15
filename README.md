@@ -1,6 +1,9 @@
 digioptions-tools.js
 ====================
 
+[![Version](https://img.shields.io/github/v/tag/berlincode/digioptions-tools.js.svg?label=version&sort=semver&logo=github)](https://github.com/berlincode/digioptions-tools.js)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?label=license)](https://github.com/berlincode/digioptions-tools.js/blob/master/LICENSE)
+
 Customizable automatic trading system for DigiOptions (javascript)
 
 

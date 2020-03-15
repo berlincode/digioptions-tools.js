@@ -137,9 +137,17 @@
     return dataNetwork.xmppJidPassword;
   }
 
-  function getProvider(network){
+  function getProvider(network, providerArgs){
     var dataNetwork = dataNetworks[network];
-    return dataNetwork.ethProvider;
+    if (dataNetwork.ethProvider.indexOf('{infuraApiKey}') < 0)
+      return dataNetwork.ethProvider;
+
+    if (! providerArgs.infuraApiKey){
+      throw new Error('providerArgs.infuraApiKey not set');
+    }
+
+    return dataNetwork.ethProvider.
+      replace('{infuraApiKey}', providerArgs.infuraApiKey);
   }
 
   return {
