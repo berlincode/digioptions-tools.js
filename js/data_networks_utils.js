@@ -137,6 +137,20 @@
     return dataNetwork.xmppJidPassword;
   }
 
+  function getProviderRPC(network, providerArgs){
+    var dataNetwork = dataNetworks[network];
+    if (dataNetwork.ethProviderRPC.indexOf('{infuraApiKey}') < 0)
+      return dataNetwork.ethProviderRPC;
+
+    if (! providerArgs.infuraApiKey){
+      throw new Error('providerArgs.infuraApiKey not set');
+    }
+
+    return dataNetwork.ethProviderRPC.
+      replace('{infuraApiKey}', providerArgs.infuraApiKey);
+  }
+
+
   function getProvider(network, providerArgs){
     var dataNetwork = dataNetworks[network];
     if (dataNetwork.ethProvider.indexOf('{infuraApiKey}') < 0)
@@ -148,6 +162,16 @@
 
     return dataNetwork.ethProvider.
       replace('{infuraApiKey}', providerArgs.infuraApiKey);
+  }
+
+  function getNetworkByNetId(netId){
+    for (var network in dataNetworks){
+      var dataNetwork = dataNetworks[network];
+      if (dataNetwork.netId === netId){
+        return network;
+      }
+    }
+    return null;
   }
 
   return {
@@ -162,6 +186,8 @@
     getXmppUrlsHttpBind: getXmppUrlsHttpBind,
     getXmppPubsubNodePath: getXmppPubsubNodePath,
     getXmppJidPassword: getXmppJidPassword,
-    getProvider: getProvider
+    getProviderRPC: getProviderRPC,
+    getProvider: getProvider,
+    getNetworkByNetId: getNetworkByNetId
   };
 });
