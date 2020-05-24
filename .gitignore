@@ -1,6 +1,5 @@
-node_modules
-README.html
-*.custom*
-_*
-npm-debug.log
-dist
+/dist/
+/node_modules/
+/README.html
+/npm-debug.log
+*.zip
