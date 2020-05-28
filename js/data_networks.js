@@ -28,6 +28,7 @@
       description: 'Main network',
       testnet: false,
       public: true,
+      blockTimeApproxMs: 13500,
       digioptionsBaseUrl: 'https://www.digioptions.com/redirect.html',
       explorer: [
         {
@@ -62,6 +63,7 @@
       description: 'Test network',
       testnet: true,
       public: true,
+      blockTimeApproxMs: 13500,
       digioptionsBaseUrl: 'https://www.digioptions.com/redirect.html',
       explorer: [
         {
@@ -96,6 +98,7 @@
       description: 'Proof-of-authority test network',
       testnet: true,
       public: true,
+      blockTimeApproxMs: 8000,
       digioptionsBaseUrl: 'https://www.digioptions.com/redirect.html',
       explorer: [
         {
@@ -125,6 +128,7 @@
       description: 'Clique-consensus test network',
       testnet: true,
       public: true,
+      blockTimeApproxMs: 15000,
       digioptionsBaseUrl: 'https://www.digioptions.com/redirect.html',
       explorer: [
         {
@@ -154,6 +158,7 @@
       description: 'Cross-client proof-of-authority test network',
       testnet: true,
       public: true,
+      blockTimeApproxMs: 15000,
       digioptionsBaseUrl: 'https://www.digioptions.com/redirect.html',
       explorer: [
         {
@@ -183,6 +188,7 @@
       description: 'ThunderCore Mainnet', // TODO
       testnet: false,
       public: true,
+      blockTimeApproxMs: 1000,
       digioptionsBaseUrl: 'https://www.digioptions.com/redirect.html',
       explorer: [
         {
@@ -212,6 +218,7 @@
       description: 'ThunderCore Testnet', // TODO
       testnet: true,
       public: true,
+      blockTimeApproxMs: 1000,
       digioptionsBaseUrl: 'https://www.digioptions.com/redirect.html',
       explorer: [
         {
