@@ -23,8 +23,7 @@
 
   return {
 
-    'main': {
-    //'ethereum-mainnet': { // TODO
+    'ethereum-mainnet': {
       name: 'Ethereum Mainnet',
       description: 'Main network',
       testnet: false,
@@ -37,8 +36,6 @@
           urlTx: 'https://etherscan.io/tx/{tx}'
         }
       ],
-      etherscanAddressUrl: 'https://etherscan.io/address/{contractAddr}', // deprecated TODO remove
-      etherscanTxUrl: 'https://etherscan.io/tx/{tx}', // deprecated TODO remove
       contractDescriptions: [
         //e.g. {addr: '0x0000000000000000000000000000000000000000', name: '<your contract name>', foreign: false},
         {
@@ -47,21 +44,20 @@
           foreign: false
         },
       ],
-      xmppUrlWebsocket: 'wss://mainnet.xmpp.digioptions.com:{port}/websocket', // TODO
-      xmppUrlHttpBind: 'https://mainnet.xmpp.digioptions.com:{port}/http-bind', // TODO
+      xmppUrlWebsocket: 'wss://ethereum-mainnet.xmpp.digioptions.com:{port}/websocket',
+      xmppUrlHttpBind: 'https://ethereum-mainnet.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
       xmppPubsubNodePath: '/v1/mainnet/{marketsAddr}/{marketHash}',
       xmppJidPassword: ['anon@mainnet.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-mainnet&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://mainnet.infura.io/v3/{infuraApiKey}',
-      ethProvider: 'wss://mainnet.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
+      ethProviderWs: 'wss://mainnet.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 1,
       chainId: null
     },
 
-    'ropsten': {
-    //'ethereum-testnet-ropsten': {  // TODO
+    'ethereum-testnet-ropsten': {
       name: 'Ethereum Testnet Ropsten',
       description: 'Test network',
       testnet: true,
@@ -74,8 +70,6 @@
           urlTx: 'https://ropsten.etherscan.io/tx/{tx}'
         }
       ],
-      etherscanAddressUrl: 'https://ropsten.etherscan.io/address/{contractAddr}', // deprecated TODO remove
-      etherscanTxUrl: 'https://ropsten.etherscan.io/tx/{tx}', // deprecated TODO remove
       contractDescriptions: [
         //e.g. {addr: '0x0000000000000000000000000000000000000000', name: '<your contract name>', foreign: false},
         {
@@ -84,15 +78,15 @@
           foreign: false
         },
       ],
-      xmppUrlWebsocket: 'wss://ropsten.xmpp.digioptions.com:{port}/websocket', // TODO
-      xmppUrlHttpBind: 'https://ropsten.xmpp.digioptions.com:{port}/http-bind', // TODO
+      xmppUrlWebsocket: 'wss://ethereum-testnet-ropsten.xmpp.digioptions.com:{port}/websocket',
+      xmppUrlHttpBind: 'https://ethereum-testnet-ropsten.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
       xmppPubsubNodePath: '/v1/ropsten/{marketsAddr}/{marketHash}',
       xmppJidPassword: ['anon@ropsten.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-testnet-ropsten&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://ropsten.infura.io/v3/{infuraApiKey}',
-      ethProvider: 'wss://ropsten.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
+      ethProviderWs: 'wss://ropsten.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 3,
       chainId: null
     },
@@ -110,8 +104,6 @@
           urlTx: 'https://kovan.etherscan.io/tx/{tx}'
         }
       ],
-      etherscanAddressUrl: 'https://kovan.etherscan.io/address/{contractAddr}', // deprecated TODO remove
-      etherscanTxUrl: 'https://kovan.etherscan.io/tx/{tx}', // deprecated TODO remove
       contractDescriptions: [
         //e.g. {addr: '0x0000000000000000000000000000000000000000', name: '<your contract name>', foreign: false},
       ],
@@ -123,7 +115,7 @@
       xmppJidPassword: ['anon@kovan.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-testnet-kovan&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://kovan.infura.io/v3/{infuraApiKey}',
-      ethProvider: 'wss://kovan.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
+      ethProviderWs: 'wss://kovan.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 42,
       chainId: null
     },
@@ -141,8 +133,6 @@
           urlTx: 'https://rinkeby.etherscan.io/tx/{tx}'
         }
       ],
-      etherscanAddressUrl: 'https://rinkeby.etherscan.io/address/{contractAddr}', // deprecated TODO remove
-      etherscanTxUrl: 'https://rinkeby.etherscan.io/tx/{tx}', // deprecated TODO remove
       contractDescriptions: [
         //e.g. {addr: '0x0000000000000000000000000000000000000000', name: '<your contract name>', foreign: false},
       ],
@@ -154,7 +144,7 @@
       xmppJidPassword: ['anon@rinkeby.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-testnet-rinkeby&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://rinkeby.infura.io/v3/{infuraApiKey}',
-      ethProvider: 'wss://rinkeby.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
+      ethProviderWs: 'wss://rinkeby.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 4,
       chainId: null
     },
@@ -172,8 +162,6 @@
           urlTx: 'https://goerli.etherscan.io/tx/{tx}'
         }
       ],
-      etherscanAddressUrl: 'https://goerli.etherscan.io/address/{contractAddr}', // deprecated TODO remove
-      etherscanTxUrl: 'https://goerli.etherscan.io/tx/{tx}', // deprecated TODO remove
       contractDescriptions: [
         //{addr: '0x0000000000000000000000000000000000000000', name: 'Test Contract', foreign: false}
       ],
@@ -185,7 +173,7 @@
       xmppJidPassword: ['anon@ethereum-testnet-goerli.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-testnet-goerli&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://goerli.infura.io/v3/{infuraApiKey}',
-      ethProvider: 'wss://goerli.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
+      ethProviderWs: 'wss://goerli.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 5,
       chainId: null
     },
@@ -203,8 +191,6 @@
           urlTx: 'https://scan.thundercore.com/transactions/{tx}'
         }
       ],
-      etherscanAddressUrl: 'https://scan.thundercore.com/address/{contractAddr}', // deprecated TODO remove
-      etherscanTxUrl: 'https://scan.thundercore.com/transactions/{tx}', // deprecated TODO remove
       contractDescriptions: [
         //{addr: '0x0000000000000000000000000000000000000000', name: 'Test Contract', foreign: false}
       ],
@@ -216,7 +202,7 @@
       xmppJidPassword: ['anon@thundercore-mainnet.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=thundercore-mainnet&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://mainnet-rpc.thundercore.com',
-      ethProvider: 'wss://mainnet-ws.thundercore.com', // for WebsocketProvider
+      ethProviderWs: 'wss://mainnet-ws.thundercore.com', // for WebsocketProvider
       netId: 108,
       chainId: null
     },
@@ -234,8 +220,6 @@
           urlTx: 'https://scan-testnet.thundercore.com/transactions/{tx}'
         }
       ],
-      etherscanAddressUrl: 'https://scan-testnet.thundercore.com/address/{contractAddr}', // deprecated TODO remove
-      etherscanTxUrl: 'https://scan-testnet.thundercore.com/transactions/{tx}', // deprecated TODO remove
       contractDescriptions: [
         {addr: '0xd54e5e0b0656fb54845fd435e4ed48a06863d195', name: 'ThunderCore Test Contract', foreign: false}
       ],
@@ -247,7 +231,7 @@
       xmppJidPassword: ['anon@thundercore-testnet.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=thundercore-testnet&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://testnet-rpc.thundercore.com',
-      ethProvider: 'wss://testnet-ws.thundercore.com', // for WebsocketProvider  // TODO rename ethProviderWs
+      ethProviderWs: 'wss://testnet-ws.thundercore.com', // for WebsocketProvider
       netId: 18,
       chainId: null
     }
