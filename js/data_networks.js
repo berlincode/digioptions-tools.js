@@ -228,7 +228,7 @@
         }
       ],
       contractDescriptions: [
-        {addr: '0xd54e5e0b0656fb54845fd435e4ed48a06863d195', name: 'ThunderCore Test Contract', foreign: false}
+        {addr: '0xdb543a208d6446550f469a79d497751f54b83455', name: 'ThunderCore Test Contract', foreign: false}
       ],
       xmppUrlWebsocket: 'wss://thundercore-testnet.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://thundercore-testnet.xmpp.digioptions.com:{port}/http-bind',
