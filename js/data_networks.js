@@ -26,6 +26,8 @@
     'ethereum-mainnet': {
       name: 'Ethereum Mainnet',
       description: 'Main network',
+      currencyNameFull: 'Ether',
+      currencyNameShort: 'Eth',
       testnet: false,
       public: true,
       blockTimeApproxMs: 13500,
@@ -61,6 +63,8 @@
     'ethereum-testnet-ropsten': {
       name: 'Ethereum Testnet Ropsten',
       description: 'Test network',
+      currencyNameFull: 'Ether',
+      currencyNameShort: 'Eth',
       testnet: true,
       public: true,
       blockTimeApproxMs: 13500,
@@ -96,6 +100,8 @@
     'ethereum-testnet-kovan': {
       name: 'Ethereum Testnet Kovan',
       description: 'Proof-of-authority test network',
+      currencyNameFull: 'Ether',
+      currencyNameShort: 'Eth',
       testnet: true,
       public: true,
       blockTimeApproxMs: 8000,
@@ -126,6 +132,8 @@
     'ethereum-testnet-rinkeby': {
       name: 'Ethereum Testnet Rinkeby',
       description: 'Clique-consensus test network',
+      currencyNameFull: 'Ether',
+      currencyNameShort: 'Eth',
       testnet: true,
       public: true,
       blockTimeApproxMs: 15000,
@@ -156,6 +164,8 @@
     'ethereum-testnet-goerli': {
       name: 'Ethereum Testnet Goerli',
       description: 'Cross-client proof-of-authority test network',
+      currencyNameFull: 'Ether',
+      currencyNameShort: 'Eth',
       testnet: true,
       public: true,
       blockTimeApproxMs: 15000,
@@ -186,6 +196,8 @@
     'thundercore-mainnet': {
       name: 'ThunderCore Mainnet',
       description: 'ThunderCore Mainnet', // TODO
+      currencyNameFull: 'Thunder Token',
+      currencyNameShort: 'TT',
       testnet: false,
       public: true,
       blockTimeApproxMs: 1000,
@@ -216,6 +228,8 @@
     'thundercore-testnet': {
       name: 'ThunderCore Testnet',
       description: 'ThunderCore Testnet', // TODO
+      currencyNameFull: 'Thunder Token',
+      currencyNameShort: 'TT',
       testnet: true,
       public: true,
       blockTimeApproxMs: 1000,

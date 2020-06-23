@@ -34,7 +34,7 @@
   } else {
     // Browser
     root.quote_provider = factory(
-      this.XhrRequestPromise
+      this.xhrRequestPromise
     );
   }
 })(this, function(request){

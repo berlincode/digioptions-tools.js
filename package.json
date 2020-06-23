@@ -1,6 +1,6 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.32.0",
+  "version": "0.33.0",
   "description": "trading tools for the ethereum based digital options exchange digioptions.com",
   "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
@@ -26,7 +26,7 @@
     "js/strophe_node_polyfills.js",
     "js/strophe_polyfills.js",
     "js/strophe.pubsub.js",
-    "js/xhr-request-promise.js",
+    "js/xhr-request-promise.min.js",
     "LICENSE",
     "pubsub.html",
     "README.md"
