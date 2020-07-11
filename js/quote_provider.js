@@ -17,7 +17,7 @@
     // AMD
     define(
       [
-        './xhr-request-promise'
+        './xhr-request-promise.min'
       ], function (
         request
       ) {
