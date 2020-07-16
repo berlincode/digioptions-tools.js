@@ -17,7 +17,7 @@
     // AMD
     define(
       [
-        './xhr-request-promise'
+        'xhr-request-promise'
       ], function (
         request
       ) {
@@ -34,7 +34,7 @@
   } else {
     // Browser
     root.quote_provider = factory(
-      this.XhrRequestPromise
+      this.xhrRequestPromise
     );
   }
 })(this, function(request){
@@ -131,6 +131,23 @@
         }
       }
     };
+
+    // catch errors
+    try {
+      this.ws.on('error', function(){
+        console.log('quote_provider websocket error');
+      });
+    } catch(error){
+      // pass
+    }
+    try {
+      this.ws.onerror(function(){
+        // catch error
+        console.log('quote_provider websocket error');
+      });
+    } catch(error){
+      // pass
+    }
 
     this.ws.onclose = function(){
       if (that.reconnect){
