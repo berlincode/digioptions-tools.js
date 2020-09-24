@@ -211,6 +211,11 @@
       ],
       contractDescriptions: [
         //{addr: '0x0000000000000000000000000000000000000000', name: 'Test Contract', foreign: false}
+        {
+          addr: '0xdb7CefB91b543f89DecA87F298baB42f53b3D437', // points to 0x9c4bA36f769C17e0eA4B76918e9D972b25Ce33f7
+          name: 'Preview',
+          foreign: false
+        },
       ],
       xmppUrlWebsocket: 'wss://thundercore-mainnet.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://thundercore-mainnet.xmpp.digioptions.com:{port}/http-bind',
