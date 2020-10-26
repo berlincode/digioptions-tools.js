@@ -51,8 +51,8 @@
       xmppUrlHttpBind: 'https://ethereum-mainnet.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
-      xmppPubsubNodePath: '/v1/mainnet/{marketsAddr}/{marketHash}',
-      xmppJidPassword: ['anon@mainnet.xmpp.digioptions.com', 'password'],
+      xmppPubsubNodePath: '/v1/ethereum-mainnet/{marketsAddr}/{marketHash}',
+      xmppJidPassword: ['anon@ethereum-mainnet.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-mainnet&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://mainnet.infura.io/v3/{infuraApiKey}',
       ethProviderWs: 'wss://mainnet.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
@@ -88,8 +88,8 @@
       xmppUrlHttpBind: 'https://ethereum-testnet-ropsten.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
-      xmppPubsubNodePath: '/v1/ropsten/{marketsAddr}/{marketHash}',
-      xmppJidPassword: ['anon@ropsten.xmpp.digioptions.com', 'password'],
+      xmppPubsubNodePath: '/v1/ethereum-testnet-ropsten/{marketsAddr}/{marketHash}',
+      xmppJidPassword: ['anon@ethereum-testnet-ropsten.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-testnet-ropsten&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://ropsten.infura.io/v3/{infuraApiKey}',
       ethProviderWs: 'wss://ropsten.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
@@ -120,8 +120,8 @@
       xmppUrlHttpBind: 'https://ethereum-testnet-kovan.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
-      xmppPubsubNodePath: '/v1/kovan/{marketsAddr}/{marketHash}',
-      xmppJidPassword: ['anon@kovan.xmpp.digioptions.com', 'password'],
+      xmppPubsubNodePath: '/v1/ethereum-testnet-kovan/{marketsAddr}/{marketHash}',
+      xmppJidPassword: ['anon@ethereum-testnet-kovan.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-testnet-kovan&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://kovan.infura.io/v3/{infuraApiKey}',
       ethProviderWs: 'wss://kovan.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
@@ -152,8 +152,8 @@
       xmppUrlHttpBind: 'https://ethereum-testnet-rinkeby.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
-      xmppPubsubNodePath: '/v1/rinkeby/{marketsAddr}/{marketHash}',
-      xmppJidPassword: ['anon@rinkeby.xmpp.digioptions.com', 'password'],
+      xmppPubsubNodePath: '/v1/ethereum-testnet-rinkeby/{marketsAddr}/{marketHash}',
+      xmppJidPassword: ['anon@ethereum-testnet-rinkeby.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-testnet-rinkeby&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://rinkeby.infura.io/v3/{infuraApiKey}',
       ethProviderWs: 'wss://rinkeby.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
@@ -184,7 +184,7 @@
       xmppUrlHttpBind: 'https://ethereum-testnet-goerli.xmpp.digioptions.com:{port}/http-bind',
       xmppPortsWebsocket: [5280],
       xmppPortsHttpBind: [5280],
-      xmppPubsubNodePath: '/v1/goerli/{marketsAddr}/{marketHash}',
+      xmppPubsubNodePath: '/v1/ethereum-testnet-goerli/{marketsAddr}/{marketHash}',
       xmppJidPassword: ['anon@ethereum-testnet-goerli.xmpp.digioptions.com', 'password'],
       xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=ethereum-testnet-goerli&marketsAddr={marketsAddr}&marketHash={marketHash}',
       ethProviderRPC: 'https://goerli.infura.io/v3/{infuraApiKey}',
@@ -211,6 +211,11 @@
       ],
       contractDescriptions: [
         //{addr: '0x0000000000000000000000000000000000000000', name: 'Test Contract', foreign: false}
+        {
+          addr: '0xdb7CefB91b543f89DecA87F298baB42f53b3D437', // points to 0x9c4bA36f769C17e0eA4B76918e9D972b25Ce33f7
+          name: 'Preview',
+          foreign: false
+        },
       ],
       xmppUrlWebsocket: 'wss://thundercore-mainnet.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://thundercore-mainnet.xmpp.digioptions.com:{port}/http-bind',
