@@ -57,7 +57,7 @@
       ethProviderRPC: 'https://mainnet.infura.io/v3/{infuraApiKey}',
       ethProviderWs: 'wss://mainnet.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 1,
-      chainId: null
+      chainId: 1
     },
 
     'ethereum-testnet-ropsten': {
@@ -94,7 +94,7 @@
       ethProviderRPC: 'https://ropsten.infura.io/v3/{infuraApiKey}',
       ethProviderWs: 'wss://ropsten.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 3,
-      chainId: null
+      chainId: 3
     },
 
     'ethereum-testnet-kovan': {
@@ -126,7 +126,7 @@
       ethProviderRPC: 'https://kovan.infura.io/v3/{infuraApiKey}',
       ethProviderWs: 'wss://kovan.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 42,
-      chainId: null
+      chainId: 42
     },
 
     'ethereum-testnet-rinkeby': {
@@ -158,7 +158,7 @@
       ethProviderRPC: 'https://rinkeby.infura.io/v3/{infuraApiKey}',
       ethProviderWs: 'wss://rinkeby.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 4,
-      chainId: null
+      chainId: 4
     },
 
     'ethereum-testnet-goerli': {
@@ -190,7 +190,7 @@
       ethProviderRPC: 'https://goerli.infura.io/v3/{infuraApiKey}',
       ethProviderWs: 'wss://goerli.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 5,
-      chainId: null
+      chainId: 5
     },
 
     'thundercore-mainnet': {
@@ -227,7 +227,7 @@
       ethProviderRPC: 'https://mainnet-rpc.thundercore.com',
       ethProviderWs: 'wss://mainnet-ws.thundercore.com', // for WebsocketProvider
       netId: 108,
-      chainId: null
+      chainId: 108
     },
 
     'thundercore-testnet': {
@@ -259,7 +259,7 @@
       ethProviderRPC: 'https://testnet-rpc.thundercore.com',
       ethProviderWs: 'wss://testnet-ws.thundercore.com', // for WebsocketProvider
       netId: 18,
-      chainId: null
+      chainId: 18
     }
   };
 });
