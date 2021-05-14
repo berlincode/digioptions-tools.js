@@ -260,6 +260,38 @@
       ethProviderWs: 'wss://testnet-ws.thundercore.com', // for WebsocketProvider
       netId: 18,
       chainId: 18
+    },
+
+    'celo-alfajores': {
+      name: 'Celo Alfajores Testnet',
+      description: 'Celo Alfajores Testnet', // TODO
+      currencyNameFull: 'Celo Token',
+      currencyNameShort: 'Celo',
+      testnet: true,
+      public: true,
+      blockTimeApproxMs: 5000,
+      digioptionsBaseUrl: 'https://www.digioptions.com/redirect.html',
+      explorer: [
+        {
+          name: 'Alfajores Celo Exlporer',
+          urlAddress: 'https://alfajores-blockscout.celo-testnet.org/address/{contractAddr}/transactions',
+          urlTx: 'https://alfajores-blockscout.celo-testnet.org/tx/{tx}/internal_transactions'
+        }
+      ],
+      contractDescriptions: [
+        {addr: '0x0e43c6f201662882efad315e87bcf0445669877b', name: 'Celo Alfajores Test Contract', foreign: false}
+      ],
+      xmppUrlWebsocket: 'wss://celo-alfajores.xmpp.digioptions.com:{port}/websocket',
+      xmppUrlHttpBind: 'https://celo-alfajores.xmpp.digioptions.com:{port}/http-bind',
+      xmppPortsWebsocket: [5280],
+      xmppPortsHttpBind: [5280],
+      xmppPubsubNodePath: '/v1/celo-alfajores/{marketsAddr}/{marketHash}',
+      xmppJidPassword: ['anon@celo-alfajores.xmpp.digioptions.com', 'password'],
+      xmppPubsubViewer: 'https://berlincode.github.io/digioptions-tools.js/pubsub.html?network=celo-alfajores&marketsAddr={marketsAddr}&marketHash={marketHash}',
+      ethProviderRPC: 'https://alfajores-forno.celo-testnet.org',
+      ethProviderWs: 'wss://alfajores-forno.celo-testnet.org/ws', // for WebsocketProvider
+      netId: 44787,
+      chainId: 44787
     }
   };
 });
