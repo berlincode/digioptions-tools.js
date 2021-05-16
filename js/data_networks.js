@@ -20,6 +20,7 @@
   // * 'ethereum-testnet-goerli'
   // * 'thundercore-mainnet'
   // * 'thundercore-testnet'
+  // * 'celo-alfajores'
 
   return {
 
