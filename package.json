@@ -43,7 +43,7 @@
   "dependencies": {
     "jsdom": "^16.4.0",
     "strophe.js": "git+https://github.com/strophe/strophejs.git#c3b7e8619347ef2b800a3f4943fe64fce6540af1",
-    "ws": "^7.0.0",
+    "ws": "^7.4.6",
     "xhr-request-promise": "^0.1.2",
     "xhr2": "^0.2.0"
   },
