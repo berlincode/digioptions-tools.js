@@ -28,7 +28,7 @@
       name: 'Ethereum Mainnet',
       description: 'Main network',
       currencyName: 'Ether',
-      currencySymbol: 'Eth',
+      currencySymbol: 'Eth', // 2-6 characters long
       currencyDecimals: 18,
       testnet: false,
       public: true,
@@ -66,7 +66,7 @@
       name: 'Ethereum Testnet Ropsten',
       description: 'Test network',
       currencyName: 'Ether',
-      currencySymbol: 'Eth',
+      currencySymbol: 'Eth', // 2-6 characters long
       currencyDecimals: 18,
       testnet: true,
       public: true,
@@ -104,7 +104,7 @@
       name: 'Ethereum Testnet Kovan',
       description: 'Proof-of-authority test network',
       currencyName: 'Ether',
-      currencySymbol: 'Eth',
+      currencySymbol: 'Eth', // 2-6 characters long
       currencyDecimals: 18,
       testnet: true,
       public: true,
@@ -137,7 +137,7 @@
       name: 'Ethereum Testnet Rinkeby',
       description: 'Clique-consensus test network',
       currencyName: 'Ether',
-      currencySymbol: 'Eth',
+      currencySymbol: 'Eth', // 2-6 characters long
       currencyDecimals: 18,
       testnet: true,
       public: true,
@@ -170,7 +170,7 @@
       name: 'Ethereum Testnet Goerli',
       description: 'Cross-client proof-of-authority test network',
       currencyName: 'Ether',
-      currencySymbol: 'Eth',
+      currencySymbol: 'Eth', // 2-6 characters long
       currencyDecimals: 18,
       testnet: true,
       public: true,
@@ -203,7 +203,7 @@
       name: 'ThunderCore Mainnet',
       description: 'ThunderCore Mainnet', // TODO
       currencyName: 'Thunder Token',
-      currencySymbol: 'TT',
+      currencySymbol: 'TT', // 2-6 characters long
       currencyDecimals: 18,
       testnet: false,
       public: true,
@@ -241,7 +241,7 @@
       name: 'ThunderCore Testnet',
       description: 'ThunderCore Testnet', // TODO
       currencyName: 'Thunder Token', 
-      currencySymbol: 'TT',
+      currencySymbol: 'TT', // 2-6 characters long
       currencyDecimals: 18,
       testnet: true,
       public: true,
@@ -274,7 +274,7 @@
       name: 'Celo Alfajores Testnet',
       description: 'Celo Alfajores Testnet', // TODO
       currencyName: 'Celo Token',
-      currencySymbol: 'Celo',
+      currencySymbol: 'Celo', // 2-6 characters long
       currencyDecimals: 18,
       testnet: true,
       public: true,
