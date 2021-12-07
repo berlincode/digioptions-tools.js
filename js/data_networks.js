@@ -22,6 +22,20 @@
   // * 'thundercore-testnet'
   // * 'celo-alfajores'
 
+
+  // see also: 
+  // interface AddEthereumChainParameter {
+  //   chainId: '0x' + network.chainId.toString(16);; // A 0x-prefixed hexadecimal string
+  //   chainName: network.name;
+  //   nativeCurrency: {
+  //     name: network.currencyName;
+  //     symbol: network.currencySymbol; // 2-6 characters long
+  //     decimals: 18;
+  //   };
+  //   rpcUrls: string[];
+  //   blockExplorerUrls?: string[];
+  // }
+
   return {
 
     'ethereum-mainnet': {
