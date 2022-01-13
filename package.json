@@ -11,7 +11,7 @@
   },
   "scripts": {
     "serve": "ws --hostname 127.0.0.1 --port 8888",
-    "eslint": "eslint *.cjs ./js/*.js ./*.html"
+    "eslint": "eslint *.cjs ./js ./*.html"
   },
   "files": [
     "css/styles.css",
