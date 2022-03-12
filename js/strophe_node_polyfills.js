@@ -72,7 +72,7 @@
   window.XMLHttpRequest = XMLHttpRequest;
   global.XMLHttpRequest = XMLHttpRequest;
 
-  global.WebSocket = require('ws');  // TODO use more recent version?
+  global.WebSocket = require('ws');
   global.DOMParser = function() {
     'use strict';
 
