@@ -52,7 +52,7 @@
         //  console.log(result);
         //}
 
-        if ((result.error) && (result.error.code === 429) && (retries > 0)){
+        if (result && (result.error) && (result.error.code === 429) && (retries > 0)){
           // error: { code: 429, message: 'Too many requests, LC' }
 
           // requeue at first position
