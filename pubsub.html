@@ -117,30 +117,30 @@ for (var i = 0; i < vars.length; i++) {
 if (args.xmppUrlWebsocket || args.xmppPortsHttpBind || args.xmppPortsWebsocket || args.xmppPortsHttpBind || args.xmppPubsubNodePath || args.xmppJidPassword){
   var network = 'private';
   window.data_networks[network] = {
-      // for local testing
-      name: 'Private Testnet',
-      description: 'Custom test network',
-      testnet: true,
-      public: false,
-      blockTimeApproxMs: parseInt(args.blockTimeApproxMs),
-      digioptionsBaseUrl: args.digioptionsBaseUrl,
-      explorer: [
-      ],
-      contractDescriptions: JSON.parse(args.contractDescriptions || '[]'),
-      xmppUrlWebsocket: args.xmppUrlWebsocket,
-      xmppUrlHttpBind: args.xmppUrlHttpBind,
-      xmppPortsWebsocket: JSON.parse(args.xmppPortsWebsocket || '[]'),
-      xmppPortsHttpBind: JSON.parse(args.xmppPortsHttpBind || '[]'),
-      xmppPubsubNodePath: args.xmppPubsubNodePath || '/v1/private/{marketsAddr}/{marketHash}',
-      xmppJidPassword: JSON.parse(args.xmppJidPassword || '""'),
-      xmppPubsubViewer: args.xmppPubsubViewerBase + '?network=' + network + '&marketsAddr={marketsAddr}&marketHash={marketHash}&', // + createQuery(args),
-      //ethProviderRPC: args.ethProviderRPC, // e.g. 'https://ropsten.infura.io/...',
-      ethProviderWs: args.ethProviderWs, // e.g. 'wss://ropsten.infura.io/...',
-      ethProviderWsWallet: args.ethProviderWsWallet, // e.g. 'wss://ropsten.infura.io/...',
-      ethProviderType: args.ethProviderType,
-      netId: parseInt(args.netId),
-      chainId: 0 // TODO
-    };
+    // for local testing
+    name: 'Private Testnet',
+    description: 'Custom test network',
+    testnet: true,
+    public: false,
+    blockTimeApproxMs: parseInt(args.blockTimeApproxMs),
+    digioptionsBaseUrl: args.digioptionsBaseUrl,
+    explorer: [
+    ],
+    contractDescriptions: JSON.parse(args.contractDescriptions || '[]'),
+    xmppUrlWebsocket: args.xmppUrlWebsocket,
+    xmppUrlHttpBind: args.xmppUrlHttpBind,
+    xmppPortsWebsocket: JSON.parse(args.xmppPortsWebsocket || '[]'),
+    xmppPortsHttpBind: JSON.parse(args.xmppPortsHttpBind || '[]'),
+    xmppPubsubNodePath: args.xmppPubsubNodePath || '/v1/private/{marketsAddr}/{marketHash}',
+    xmppJidPassword: JSON.parse(args.xmppJidPassword || '""'),
+    xmppPubsubViewer: args.xmppPubsubViewerBase + '?network=' + network + '&marketsAddr={marketsAddr}&marketHash={marketHash}&', // + createQuery(args),
+    //ethProviderRPC: args.ethProviderRPC, // e.g. 'https://ropsten.infura.io/...',
+    ethProviderWs: args.ethProviderWs, // e.g. 'wss://ropsten.infura.io/...',
+    ethProviderWsWallet: args.ethProviderWsWallet, // e.g. 'wss://ropsten.infura.io/...',
+    ethProviderType: args.ethProviderType,
+    netId: parseInt(args.netId),
+    chainId: 0 // TODO
+  };
 }
 
 // set servers/networks from data_networks
