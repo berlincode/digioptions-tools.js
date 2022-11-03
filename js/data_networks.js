@@ -14,7 +14,6 @@
 
   // supported networks (see also: https://chainid.network/):
   // * 'ethereum-mainnet'
-  // * 'ethereum-testnet-ropsten'
   // * 'ethereum-testnet-kovan'
   // * 'ethereum-testnet-rinkeby'
   // * 'ethereum-testnet-goerli'
@@ -76,6 +75,7 @@
       chainId: 1
     },
 
+    /* network is deprecated
     'ethereum-testnet-ropsten': {
       name: 'Ethereum Testnet Ropsten',
       description: 'Test network',
@@ -112,7 +112,7 @@
       ethProviderWs: 'wss://ropsten.infura.io/ws/v3/{infuraApiKey}', // for WebsocketProvider
       netId: 3,
       chainId: 3
-    },
+    },*/
 
     'ethereum-testnet-kovan': {
       name: 'Ethereum Testnet Kovan',
@@ -198,7 +198,7 @@
         }
       ],
       contractDescriptions: [
-        //{addr: '0x0000000000000000000000000000000000000000', name: 'Test Contract', foreign: false}
+        {addr: '0xf7340305724b925F24CB1b99eF270f32542b5eCA', name: 'Goerli Test Contract', foreign: false}
       ],
       xmppUrlWebsocket: 'wss://ethereum-testnet-goerli.xmpp.digioptions.com:{port}/websocket',
       xmppUrlHttpBind: 'https://ethereum-testnet-goerli.xmpp.digioptions.com:{port}/http-bind',

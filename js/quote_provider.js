@@ -329,7 +329,7 @@
     this.realtimeCallback = null;
 
     for (var key in this.providers) {
-      if (this.providers.hasOwnProperty(key)) {
+      if (key in this.providers) {
         this.providers[key].close();
         //console.log('closing', key);
       }

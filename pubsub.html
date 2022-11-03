@@ -152,7 +152,7 @@ $.each(window.data_networks, function(key) {
 
 for (var key in args) {
   // check if the property/key is defined in the object itself, not in parent
-  if (args.hasOwnProperty(key)) {           
+  if (key in args) {           
     var value = args[key];
     if (key === 'network')
       $('#network').val(value);
