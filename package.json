@@ -21,6 +21,7 @@
     "js/data_networks_utils.js",
     "js/index.js",
     "js/offer_normalize.js",
+    "js/provider_retry_wrapper.js",
     "js/pubsub.js",
     "js/quote_provider.js",
     "js/strophe_node_polyfills.js",
