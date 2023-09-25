@@ -1,6 +1,6 @@
 {
   "name": "digioptions-tools.js",
-  "version": "0.36.0",
+  "version": "0.36.1",
   "description": "trading tools for the ethereum based digital options exchange digioptions.com",
   "homepage": "https://github.com/berlincode/digioptions-tools.js",
   "license": "MIT",
@@ -42,9 +42,9 @@
     "ethereum"
   ],
   "dependencies": {
-    "jsdom": "^20.0.2",
+    "jsdom": "^22.1.0",
     "strophe.js": "git+https://github.com/strophe/strophejs.git#c3b7e8619347ef2b800a3f4943fe64fce6540af1",
-    "ws": "^7.0.0",
+    "ws": "^8.12.1",
     "xhr-request-promise": "^0.1.2",
     "xhr2": "^0.2.0"
   },
